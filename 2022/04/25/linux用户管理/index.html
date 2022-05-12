@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>笔记 | 笔记</title><meta name="keywords" content="bigdata java"><meta name="author" content="秋水一色"><meta name="copyright" content="秋水一色"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1、用户组管理12345用户组的管理包括用户组的添加、删除和修改。为什么要建立用户组人事部有20名员工，我们要建立一个组，叫 hr，这样就不用分别给20个员工设置权限了。  ① 用户组添加命令：groupadd 作用：添加组 语法：# groupadd  [参数选项  选项值]  用户组名 选项：-g：设置用户组ID 数字，如果不指定，则默认从1000 之后递增（1-999系统组） 1234用法一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记">
+<meta property="og:url" content="http://example.com/2022/04/25/linux%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="笔记">
+<meta property="og:description" content="1、用户组管理12345用户组的管理包括用户组的添加、删除和修改。为什么要建立用户组人事部有20名员工，我们要建立一个组，叫 hr，这样就不用分别给20个员工设置权限了。  ① 用户组添加命令：groupadd 作用：添加组 语法：# groupadd  [参数选项  选项值]  用户组名 选项：-g：设置用户组ID 数字，如果不指定，则默认从1000 之后递增（1-999系统组） 1234用法一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png">
+<meta property="article:published_time" content="2022-04-25T09:53:05.008Z">
+<meta property="article:modified_time" content="2022-04-25T14:59:15.961Z">
+<meta property="article:author" content="秋水一色">
+<meta property="article:tag" content="bigdata java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/04/25/linux%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-25 22:59:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="笔记" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/mD5ZV7wdUBGl62S.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-25T09:53:05.008Z" title="发表于 2022-04-25 17:53:05">2022-04-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-25T14:59:15.961Z" title="更新于 2022-04-25 22:59:15">2022-04-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="1、用户组管理"><a href="#1、用户组管理" class="headerlink" title="1、用户组管理"></a>1、用户组管理</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用户组的管理包括用户组的添加、删除和修改。</span><br><span class="line"></span><br><span class="line">为什么要建立用户组</span><br><span class="line"></span><br><span class="line">人事部有20名员工，我们要建立一个组，叫 hr，这样就不用分别给20个员工设置权限了。</span><br></pre></td></tr></table></figure>
+
+<h3 id="①-用户组添加"><a href="#①-用户组添加" class="headerlink" title="① 用户组添加"></a>① 用户组添加</h3><p>命令：groupadd</p>
+<p>作用：添加组</p>
+<p>语法：# groupadd  [参数选项  选项值]  用户组名</p>
+<p>选项：-g：设置用户组ID 数字，如果不指定，则默认从1000 之后递增（1-999系统组）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法一：groupadd 组名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#groupadd bigdata</span></span><br><span class="line">含义：新建一个组叫做bigdata</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/npRaHjm9SbX6M1k.png" alt="image-20220425210757721"></p>
+<p>提示：linux下我们执行完命令，有时候会没有任何提示，直接回到#提示符，这种状态表明，命令执行成功，没有报错。&#x3D;&#x3D;“没有消息就是最好的消息”&#x3D;&#x3D;</p>
+<p>存储用户组信息的文件：&#x2F;etc&#x2F;group<br> 使用cat命令，查看&#x2F;etc&#x2F;group文件</p>
+<p>&#x2F;etc&#x2F;group文件结构：</p>
+<p>特别说明：</p>
+<p>1） 密码位<code>x</code>代表<code>占位符</code>，用户组可以设置密码，但是大部分情况下不需要设置</p>
+<p>2）组内用户名：表示附加组是该组的用户名称。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/YDOHwAhScxNpVGe.png" alt="image-20220425211850494"></p>
+<h3 id="②-用户组修改"><a href="#②-用户组修改" class="headerlink" title="② 用户组修改"></a>② 用户组修改</h3><p>命令：groupmod</p>
+<p>语法：# groupmod   [选项   选项值]   用户组名</p>
+<p>选项：-g  ：gid缩写，设置一个自定义的用户组ID 数字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-n  ：name缩写，设置新的用户组的名称</span><br></pre></td></tr></table></figure>
+
+<p>示例代码：修改bigdata用户组，将组ID改成1100，将名称改为bigdata1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法一：groupmod -g 新的组ID -n 新的组ID 原有组ID</span><br><span class="line">示例代码：</span><br><span class="line">#groupmod -g 1100 -n bigdata1 bigdata</span><br><span class="line">含义：将bigdata组的组ID改成1100，组名改成bigdata1</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/59HpA2iK1Cvdxb6.png" alt="image-20220425220023602"></p>
+<h3 id="③-用户组删除"><a href="#③-用户组删除" class="headerlink" title="③ 用户组删除"></a>③ 用户组删除</h3><p>命令：groupdel</p>
+<p>语法：# groupdel  用户组名</p>
+<p>案例：删除bigdata1组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法一：groupdel 组名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#groupdel bigdata1</span></span><br><span class="line">含义：将bigdata1组删除</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/EtZWhnz6brfRJxg.png" alt="image-20220425221937616"></p>
+<h2 id="2、用户管理"><a href="#2、用户管理" class="headerlink" title="2、用户管理"></a>2、用户管理</h2><p>用户的管理涉及用户的添加、删除和修改。</p>
+<p>与用户相关的文件：&#x2F;etc&#x2F;passwd</p>
+<h3 id="①useradd添加用户"><a href="#①useradd添加用户" class="headerlink" title="①useradd添加用户"></a>①useradd添加用户</h3><p>命令：useradd</p>
+<p>作用：添加用户</p>
+<p>语法：# useradd   [选项  选项的值]   …   用户名</p>
+<p>选项：-g：表示指定用户的用户主（主要）组，选项值可以是用户组ID，也可以是组名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-G：表示指定用户的用户附加（额外）组，选项值可以是用户组ID，也可以是组名</span><br><span class="line"></span><br><span class="line">-u ：uid，用户的id（用户的标识符），系统默认会从500 /或1000之后按顺序分配uid，如果不想使用系统分配的，可以通过该选项自定义【类似于腾讯QQ 的自选靓号情况】</span><br><span class="line"></span><br><span class="line">-c：comment，添加注释（选择是否添加）</span><br><span class="line"></span><br><span class="line">-s：指定用户登入后所使用的shell 解释器，默认/bin/bash【专门的接待员】，如果不想让其登录，则可以设置为/sbin/nologin   （重要）</span><br><span class="line"></span><br><span class="line">-d：指定用户登入时的启始目录（家目录位置）</span><br><span class="line"></span><br><span class="line">    -n：取消建立以用户名称为名的群组（了解）</span><br><span class="line"></span><br><span class="line"> 当我新建一个账户叫user01, 同时，系统会自动建立一个组也叫user01</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法一：useradd 用户名</span><br><span class="line">示例代码：</span><br><span class="line">#useradd hzh</span><br><span class="line">含义：创建用户hzh，不带任何选项。</span><br></pre></td></tr></table></figure>
+
+<p>注意：不用任何参数，创建用户，系统会默认执行以下操作：</p>
+<p>1）在 &#x2F;etc&#x2F;passwd 文件中创建一行关于hzh用户的数据</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/l149argXGmFtVoK.png" alt="image-20220425222337183"></p>
+<p> 2）在 &#x2F;etc&#x2F;shadow 文件中新增了一行关于wyh密码的数据</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/oqDQihSmxaUlYCJ.png" alt="image-20220425224109139"></p>
+<p> 3）在 &#x2F;etc&#x2F;group 文件中创建一行与用户名相同的组，例如wyh</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/V1fFiYKbUw5eumD.png" alt="image-20220425224156762"></p>
+<p> 4）在 &#x2F;etc&#x2F;gshadow 文件中新增一行与新增群组相关的密码信息，例如wyh</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/mgCprBDyfAshOKx.png" alt="image-20220425224224338"></p>
+<p> 5）自动创建用户的家目录，默认在&#x2F;home下，与用户名同名</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/k4gRO2fNYBuovF9.png" alt="image-20220425224328709"></p>
+<p>验证是否成功：</p>
+<p>1）使用tail文件查看&#x2F;etc&#x2F;passwd文件</p>
+<p>2）使用tail文件查看&#x2F;etc&#x2F;group文件</p>
+<p>3）验证是否存在家目录（在Centos 下创建好用户之后随之产生一个同名家目录）</p>
+<h3 id="②etc-x2F-passwd存储用户信息的文件"><a href="#②etc-x2F-passwd存储用户信息的文件" class="headerlink" title="②etc&#x2F;passwd存储用户信息的文件"></a>②etc&#x2F;passwd存储用户信息的文件</h3><p>使用vim命令打开&#x2F;etc&#x2F;passwd文件</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root : x : <span class="number">0</span> : <span class="number">0</span> : root : <span class="regexp">/root : /</span>bin/bash</span><br><span class="line">用户名 : 密码 : 用户<span class="variable constant_">ID</span> : 用户组<span class="variable constant_">ID</span> : 注释 : 家目录 : 解释器shell</span><br></pre></td></tr></table></figure>
+
+<p><strong>用户名</strong>：登录linux时使用的用户名<br> <strong>密码</strong>：此密码位置一般情况都是”x”，表示密码的占位，真实密码存储在&#x2F;etc&#x2F;shadow<br> <strong>用户ID</strong>：用户的识别符，每个用户都有唯一的UID【-u】<br> <strong>用户组ID</strong>：该用户所属的主组ID；【-g】</p>
+<p><strong>注释</strong>：解释该用户是做什么用的；【-c】<br> <strong>家目录</strong>：用户登录进入系统之后默认的位置；【-d】<br> <strong>解释器shell</strong>：等待用户进入系统之后，用户输入指令之后，该解释器会收集用户输入的指令，转换成机器语言，传递给内核处理；如果解释器是&#x3D;&#x3D;&#x2F;bin&#x2F;bash 表示用户可以登录到系统&#x3D;&#x3D;，&#x3D;&#x3D;&#x2F;sbin&#x2F;nologin表示该用户不能登录到系统&#x3D;&#x3D;【-s】</p>
+<p>下面我们来看一下对于useradd参数的使用</p>
+<p><strong>企业场景1：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">     公司新员工lisi，属于bigdata部门，用户ID1200，不允许登录系统</span><br><span class="line">思路：</span><br><span class="line">    创建用户lisi，默认lisi属于自己同名的主组，让lisi 属于附加组bigdata1，用户ID 1200，注释为<span class="string">&quot;数据工程师lisi&quot;</span>，解释器为/sbin/nologin</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">用法二：useradd <span class="literal">-G</span> 附加组名 <span class="literal">-u</span> 用户ID <span class="literal">-s</span> /sbin/nologin <span class="literal">-c</span> <span class="string">&quot;shuser lisi&quot;</span> 用户名</span><br><span class="line">示例代码：</span><br><span class="line">[<span class="type">root</span>@<span class="type">master</span> <span class="type">hzh</span>]<span class="comment"># useradd -G bigdata -u 1200 -s /sbin/nologin -c &quot;数据工程师lisi&quot; lisi</span></span><br><span class="line">useradd：“bigdata”组不存在</span><br><span class="line">[<span class="type">root</span>@<span class="type">master</span> <span class="type">hzh</span>]<span class="comment"># groupadd bigdata</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">master</span> <span class="type">hzh</span>]<span class="comment"># useradd -G bigdata -u 1200 -s /sbin/nologin -c &quot;数据工程师lisi&quot; lisi</span></span><br><span class="line"></span><br><span class="line">含义：创建用户lisi，不带任何选项。</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bigdata行的含义：在bigdata的组里（组<span class="type">id</span> 是<span class="number">1002</span>）有一个组内用户lisi（lisi 的附加组就是<span class="number">1002</span>，附加组的名字是bigdata1）。</span><br><span class="line">如果需要为一个用户指定多个附加组，只需要将多个附加组的<span class="type">id</span> 通过英文逗号“,”分割即可。</span><br><span class="line">例如-G <span class="number">500</span>,<span class="number">501</span>,<span class="number">502</span></span><br><span class="line"></span><br><span class="line">① 主组只能有<span class="number">1</span> 个（类似于亲生父母只有一对），附加组可以多个，也可以没有附加组（类似于认干爹干妈，可以有也可以没有，也可以有多个）</span><br><span class="line">② 主组必须有</span><br><span class="line">③ 后期将权限管理的时候，关于文档的属组指的是主组（了解）</span><br></pre></td></tr></table></figure>
+
+<h3 id="③id查看用户信息"><a href="#③id查看用户信息" class="headerlink" title="③id查看用户信息"></a>③id查看用户信息</h3><p>命令：id</p>
+<p>作用：查看一个用户的一些基本信息（包含用户id，用户组id，附加组id…），该指令如果不指定用户则默认当前用户。</p>
+<p>语法1：# id  <code>默认显示当前执行该命令的用户的基本信息</code></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/vXxAD93nSeRUKhf.png" alt="image-20220425224939961"></p>
+<p> 语法2：# id <code>用户名</code>， 显示指定用户的基本信息</p>
+<p> 如何验证以上信息是否正确？</p>
+<p>&#x3D;&#x3D;答：验证用户信息：通过文件&#x2F;etc&#x2F;passwd，验证用户组信息：通过文件&#x2F;etc&#x2F;group&#x3D;&#x3D;</p>
+<h3 id="④usermod修改用户"><a href="#④usermod修改用户" class="headerlink" title="④usermod修改用户"></a>④usermod修改用户</h3><p>命令：usermod(user modify)</p>
+<p>语法：# usermod   [选项  选项的值]   …  用户名</p>
+<p>作用：修改用户的各种属性</p>
+<p>选项：-g：表示指定用户的用户主组，选项的值可以是用户组的ID，也可以是组名</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-G：表示指定用户的用户附加组，选项的值可以是用户组的ID，也可以是组名</span><br><span class="line"></span><br><span class="line">-u：uid，用户的id（用户的标识符），系统默认会从500 之后按顺序分配uid，如果不想使用系统分配的，可以通过该选项自定义【类似于腾讯QQ 的自选靓号情况】</span><br><span class="line"></span><br><span class="line"> -L：锁定用户，锁定后用户无法登陆系统lock</span><br><span class="line"></span><br><span class="line">     -U：解锁用户unlock</span><br><span class="line"></span><br><span class="line"> -c&lt;备注&gt;：修改用户帐号的备注文字</span><br><span class="line"></span><br><span class="line"> -d&lt;登入目录&gt;：修改用户登入时的目录</span><br><span class="line"></span><br><span class="line"> -s<span class="tag">&lt;<span class="name">shell</span>&gt;</span>：修改用户登入后所使用的shell</span><br></pre></td></tr></table></figure>
+
+<p><strong>企业场景2：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">公司员工wangwu，属于bigdata部门，现在要休产假，产假期间，暂时停止她登陆电脑的权限，同时原来属于wyhshujia部门的员工lisi，负责wangwu的工作，所以，需要把lisi加入到bigdata的组，同时，修改lisi的账户注释为“wyhshujia bigdata user”</span><br><span class="line"></span><br><span class="line">对于wangwu用户，我们要执行锁定和解锁操作</span><br><span class="line"></span><br><span class="line">对于lisi用户，我们要将lisi加入到bigdata的附加组，同时修改lisi账户的注释</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@master hzh]<span class="comment"># usermod -L wangwu</span></span><br><span class="line">usermod：用户“wangwu”不存在</span><br><span class="line">[root@master hzh]<span class="comment"># useradd -G bigdata -u 1300 -c &quot;大数据开发&quot; wangwuuseradd：“bigdata”组不存在</span></span><br><span class="line">[root@master hzh]<span class="comment"># groupadd bigdata</span></span><br><span class="line">[root@master hzh]<span class="comment"># useradd -G bigdata -u 1300 -c &quot;大数据开发&quot; wangwu</span></span><br><span class="line">[root@master hzh]<span class="comment"># usermod -L wangwu</span></span><br><span class="line"></span><br><span class="line">用法一：usermod -L 王五账户名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#usermod -L wangwu</span></span><br><span class="line">含义：将王五账户暂时锁定</span><br><span class="line"></span><br><span class="line">用法二：usermod -U 王五账户名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#usermod -U wangwu</span></span><br><span class="line">含义：将王五账户解锁</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用法三：usermod <span class="operator">-</span><span class="type">G</span> 组名 <span class="operator">-</span>c “注释内容” 李四用户账号</span><br><span class="line">示例代码：</span><br><span class="line">#usermod <span class="operator">-</span><span class="type">G</span> bigdata <span class="operator">-</span>c <span class="string">&quot;bigdata user&quot;</span> lisi</span><br><span class="line">含义：将李四的账户加入bigdata组，并修改注释内容为shhr user</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="⑤passwd修改用户密码"><a href="#⑤passwd修改用户密码" class="headerlink" title="⑤passwd修改用户密码"></a>⑤passwd修改用户密码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Linux ==不允许没有密码的用户登录到系统==，因此前面创建的用户目前都处于锁定状态，需要设置密码之后才能登录计算机。</span><br></pre></td></tr></table></figure>
+
+<p>命令：passwd</p>
+<p>语法：# passwd  用户名 【如果不指定用户名则修改自己的密码】</p>
+<p>作用：修改用户密码<br> <strong>企业场景3：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">王五产假休完回到公司上班，需要将王五的账户解锁，在使用usermod -U解锁时，我们看到一个错误信息如下：</span><br></pre></td></tr></table></figure>
+
+<p>usermod: unlocking the user’s password would result in a passwordless account.</p>
+<p>解锁这个账户，将导致一个没有密码的账户，因为之前王五的账户没有密码。这时候，我们就需要使用passwd命令，给王五的账户设置一个密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">用法一：passwd 账户名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="comment">#passwd wangwu</span></span><br><span class="line">含义：为wangwu账户设置密码</span><br><span class="line">注意：</span><br><span class="line">    当密码过于简单时，系统会提示这是一个不好的密码，因为它太简单了，但是我们仍然可以坚持使用这个密码。</span><br><span class="line">    在我们输入密码时，屏幕不会有任何显示。</span><br><span class="line">    密码需要输入两次，请确保两次输入的密码是一样的。</span><br></pre></td></tr></table></figure>
+
+<h3 id="⑥认识-x2F-etc-x2F-shadow文件"><a href="#⑥认识-x2F-etc-x2F-shadow文件" class="headerlink" title="⑥认识&#x2F;etc&#x2F;shadow文件"></a>⑥认识&#x2F;etc&#x2F;shadow文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">由于 /etc/passwd文件允许所有用户读取，易导致用户密码泄露，因此 Linux 系统将用户的密码信息从 /etc/passwd 文件中分离出来，并单独放到了shadow文件中。</span><br><span class="line"></span><br><span class="line">/etc/shadow 文件只有 root 用户拥有读权限，其他用户没有任何权限，这样就保证了用户密码的安全性。  </span><br></pre></td></tr></table></figure>
+
+<p>与用户密码相关的文件：&#x2F;etc&#x2F;shadow</p>
+<p>为用户设置密码之后，会自动在&#x2F;etc&#x2F;shadow文件中进行体现，使用vim编辑器打开</p>
+<p>第一列为用户名，例如zhangsan</p>
+<p>后面是加密后的密码，就是$开头的字符串</p>
+<p>如果显示为!!,则表示这个用户&#x3D;&#x3D;没有&#x3D;&#x3D;设置密码。</p>
+<p>由以上截图所知，wyh,lisi是没有设置密码的。wangwu我们刚刚设置了密码，所以显示为一个加密的字符创</p>
+<p>任务：新建一个账户叫shujiaxiaoli</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">新建第二个账户叫shujiaxiaoli</span><br><span class="line"></span><br><span class="line">给shujiaxiaoli账户设置一个密码</span><br><span class="line"></span><br><span class="line">进入shadow文件，观察两个账户的区别</span><br></pre></td></tr></table></figure>
+
+<h3 id="⑦su切换用户"><a href="#⑦su切换用户" class="headerlink" title="⑦su切换用户"></a>⑦su切换用户</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在设置用户密码之后就可以使用此账号进行登录系统了，如果系统处于已登录状态，则可以使用su命令进行切换用户。</span><br><span class="line"></span><br><span class="line">为了系统安全，企业中通常不会允许root用户直接登录计算机，但是工作需要，我们又需要使用root权限，这时候，我们就可以先使用一个普通用户登录计算机，再通过su命令切换到root权限。</span><br></pre></td></tr></table></figure>
+
+<p>命令：su</p>
+<p>语法：# su  [-]   账号</p>
+<p>作用：切换用户</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">用法一：su 用户名</span><br><span class="line">示例代码：</span><br><span class="line"><span class="selector-id">#su</span> root</span><br><span class="line">含义：切换到root权限</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line"><span class="selector-tag">a</span>. 从root 往普通用户切换不需要密码，但是反之则需要root 密码；</span><br><span class="line"><span class="selector-tag">b</span>. 切换用户之后前后的工作路径是不变的，添加了选项<span class="selector-attr">[-]</span>会自动切换到用户的家；</span><br><span class="line">c. 普通用户没有办法访问root 用户家目录，但是反之则可以；</span><br></pre></td></tr></table></figure>
+
+<p>启用wheel组设置（了解）</p>
+<p>步骤1：使用vim编辑器 打开&#x2F;etc&#x2F;pam.d&#x2F;su文件</p>
+<p>步骤2：编辑文件，去掉auth required pam_wheel.so use_uid这一行前面的#，使这一行配置生效</p>
+<p>步骤3：下面是去掉#后的状态</p>
+<p>步骤4：保存退出 ：wq<br>这时，只有在wheel组内的用户才可以su到root</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/04/25/9CUH3kfQtROpW5K.png" alt="image-20220425225804162"></p>
+<p> ⑧userdel删除用户<br> 命令：userdel</p>
+<p>语法：# userdel   选项   用户名</p>
+<p>作用：删除账户及其对应家目录</p>
+<p>选项：-r：表示删除用户的同时，删除其家目录&#x2F;home下的对应文件夹</p>
+<p>权限:<br>    通过ll查看详细信息时:-rw-r–r–. 1 root root     11 4月  24 21:22 xiao.txt<br>    -:表示类型<br>    rw-:当前用户权限<br>    r–:当前用户组权限<br>    r–:其他用户权限</p>
+<pre><code>r:读     4
+w:写     2
+x:执行   1
+
+u:当前用户
+g:当前组
+o:其他
+a:所有
+</code></pre>
+<p>权限分配<br>    chmod:修改权限<br>        格式1:(使用相加减表达权限)<br>            chmod [选项] [权限修改] [文件]<br>        格式2:(使用数字表达权限)<br>            chmod [选项] [权限修改] [文件]<br>            4:读<br>            2:写<br>            1:执行<br>            7:全部<br>        注意:如果只给一个数字表示修改o,两个表示修改go<br>        选项:<br>            -R:迭代修改</p>
+<pre><code>chgrp:修改用户组
+    格式:
+        chgrp [选项] [组名] [文件或目录]
+    选项:
+        -R:表达迭代修改
+    注意:文件或目录的所有用户或所有组,都是以编号来查询所有用户或所有组
+        如果不存在就显示编号,存在显示名称
+
+chown:修改所属用户
+    格式:
+        chown [选项] [组名] [文件或目录]
+    选项:
+        -R:表达迭代修改
+
+sudo:越权执行
+    格式:
+        sudo 命令
+    注意:sudo实际上去借root权限执行命令(root对普通用户分配了权限)
+
+sudo -l:查看当前权限
+
+visudo:修改配置文件进行权限分配(文件所在位置/etc/sudoers)
+    例如:普通用户拥有root所有权限
+        用户名 ALL=(ALL) ALL
+        用户名 ALL=(root) ALL
+    例如:普通用户只能执行一个命令
+        用户名 ALL=(root)/bin/rm
+
+可以同过vim /etc/sudoers修改权限分配
+</code></pre>
+<p>查找<br>    find<br>        格式:<br>            find 开始查找路径 [选项] [条件]<br>        选项:<br>            -name<br>                <em>表示匹配所有<br>                ?表示匹配一个<br>                例如:从&#x2F;开始查找后缀为.txt<br>                    find &#x2F; -name “</em>.txt”<br>            -type<br>                d:表示目录<br>                f:表示文件<br>                例如:从&#x2F;开始查找文件<br>                    find &#x2F; -type f<br>            -size<br>                ll –block-size&#x3D;单位<br>                    例如:大小以k为单位进行显示<br>                        ll –block-size&#x3D;k<br>                注意:条件需要给上单位<br>                    +表示大于<br>                    -表示小于<br>                    不给就是等于<br>                例如:从&#x2F;开始查找文件大小大于2k<br>                    find &#x2F; -size +2k<br>            -user<br>            -group<br>Linux常见符号<br>    |:管道,把前面一部分的内容交给后面去处理<br>    例如:<br>        cat &#x2F;etc&#x2F;profile | more</p>
+<pre><code>grep:筛选
+    格式:
+        grep 筛选条件
+&gt;&gt;:追加,把命令1的结果写入到命令2
+    格式:
+        命令1 &gt;&gt; 命令2 
+    例如:cat profile &gt;&gt; test.txt
+&gt;:覆盖
+    格式:
+        命令1 &gt; 命令2 
+    例如:cat profile &gt; test.txt
+</code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">秋水一色</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/04/25/linux%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/">http://example.com/2022/04/25/linux%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/04/28/Shell%E7%BC%96%E7%A8%8B/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2022/04/23/linux%E5%9F%BA%E7%A1%80/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Linux</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/mD5ZV7wdUBGl62S.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">秋水一色</div><div class="author-info__description">会当水击三千里，自信人生二百年</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hzh4015"><i class="fab fa-github"></i><span>一起学习，加油！</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/hzh4015" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/hzh4015@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2597845702&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my first Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">1、用户组管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0-%E7%94%A8%E6%88%B7%E7%BB%84%E6%B7%BB%E5%8A%A0"><span class="toc-number">1.1.</span> <span class="toc-text">① 用户组添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1-%E7%94%A8%E6%88%B7%E7%BB%84%E4%BF%AE%E6%94%B9"><span class="toc-number">1.2.</span> <span class="toc-text">② 用户组修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2-%E7%94%A8%E6%88%B7%E7%BB%84%E5%88%A0%E9%99%A4"><span class="toc-number">1.3.</span> <span class="toc-text">③ 用户组删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">2、用户管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0useradd%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7"><span class="toc-number">2.1.</span> <span class="toc-text">①useradd添加用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1etc-x2F-passwd%E5%AD%98%E5%82%A8%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">②etc&#x2F;passwd存储用户信息的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2id%E6%9F%A5%E7%9C%8B%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.</span> <span class="toc-text">③id查看用户信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A3usermod%E4%BF%AE%E6%94%B9%E7%94%A8%E6%88%B7"><span class="toc-number">2.4.</span> <span class="toc-text">④usermod修改用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A4passwd%E4%BF%AE%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="toc-number">2.5.</span> <span class="toc-text">⑤passwd修改用户密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A5%E8%AE%A4%E8%AF%86-x2F-etc-x2F-shadow%E6%96%87%E4%BB%B6"><span class="toc-number">2.6.</span> <span class="toc-text">⑥认识&#x2F;etc&#x2F;shadow文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A6su%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="toc-number">2.7.</span> <span class="toc-text">⑦su切换用户</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/04/29/MySQL%E6%A6%82%E8%BF%B0%E4%BB%A5%E5%8F%8A%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/04/29/MySQL%E6%A6%82%E8%BF%B0%E4%BB%A5%E5%8F%8A%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85/" title="无题">无题</a><time datetime="2022-04-29T07:59:56.560Z" title="发表于 2022-04-29 15:59:56">2022-04-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/28/shell%E4%BB%BB%E5%8A%A1%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/04/28/shell%E4%BB%BB%E5%8A%A1%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE/" title="无题">无题</a><time datetime="2022-04-28T10:27:00.053Z" title="发表于 2022-04-28 18:27:00">2022-04-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/28/Shell%E7%BC%96%E7%A8%8B/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/04/28/Shell%E7%BC%96%E7%A8%8B/" title="无题">无题</a><time datetime="2022-04-28T10:26:42.888Z" title="发表于 2022-04-28 18:26:42">2022-04-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/25/linux%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/04/25/linux%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/" title="无题">无题</a><time datetime="2022-04-25T09:53:05.008Z" title="发表于 2022-04-25 17:53:05">2022-04-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/23/linux%E5%9F%BA%E7%A1%80/" title="Linux"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux"/></a><div class="content"><a class="title" href="/2022/04/23/linux%E5%9F%BA%E7%A1%80/" title="Linux">Linux</a><time datetime="2022-04-23T09:08:19.486Z" title="发表于 2022-04-23 17:08:19">2022-04-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 秋水一色</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

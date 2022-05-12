@@ -1,7 +1,11 @@
-http://example.com/2022/04/23/Linux/
+http://example.com/2022/04/13/%E9%80%92%E5%BD%92/
+http://example.com/2022/04/29/MySQL%E6%A6%82%E8%BF%B0%E4%BB%A5%E5%8F%8A%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85/
+http://example.com/2022/04/28/Shell%E7%BC%96%E7%A8%8B/
+http://example.com/2022/04/28/shell%E4%BB%BB%E5%8A%A1%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE/
+http://example.com/2022/04/25/linux%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/
+http://example.com/2022/04/23/linux%E5%9F%BA%E7%A1%80/
 http://example.com/2022/04/18/%E5%8F%8D%E5%B0%84/
 http://example.com/2022/04/11/%E5%A4%9A%E7%BA%BF%E7%A8%8B/
-http://example.com/2022/04/13/%E9%80%92%E5%BD%92/
 http://example.com/2022/04/13/File%E7%B1%BB/
 http://example.com/2022/04/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/
 http://example.com/2022/04/08/Io%E6%B5%81/
