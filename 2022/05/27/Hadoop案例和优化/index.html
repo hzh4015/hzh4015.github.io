@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Hadoop的一些优化 | Notes</title><meta name="keywords" content="Hadoop 大数据 分布式"><meta name="author" content="秋水一色"><meta name="copyright" content="秋水一色"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对学习Hadoop的一些知识笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop的一些优化">
+<meta property="og:url" content="http://example.com/2022/05/27/Hadoop%E6%A1%88%E4%BE%8B%E5%92%8C%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="对学习Hadoop的一些知识笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png">
+<meta property="article:published_time" content="2022-05-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-31T15:55:02.889Z">
+<meta property="article:author" content="秋水一色">
+<meta property="article:tag" content="Hadoop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/05/27/Hadoop%E6%A1%88%E4%BE%8B%E5%92%8C%E4%BC%98%E5%8C%96/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hadoop的一些优化',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-05-31 23:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/mD5ZV7wdUBGl62S.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Notes</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hadoop的一些优化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-26T16:00:00.000Z" title="发表于 2022-05-27 00:00:00">2022-05-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-31T15:55:02.889Z" title="更新于 2022-05-31 23:55:02">2022-05-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hadoop的一些优化"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Hadoop优化"><a href="#Hadoop优化" class="headerlink" title="Hadoop优化"></a>Hadoop优化</h1><h2 id="优化1：Combiner"><a href="#优化1：Combiner" class="headerlink" title="优化1：Combiner"></a>优化1：Combiner</h2><blockquote>
+<p>减少了reduce 从map拉取数据的过程，提高计算效率。</p>
+<p>hadoop 的计算特点：<strong>将计算任务向数据靠拢，而不是将数据向计算靠拢。</strong></p>
+<p>特点：数据本地化，减少网络io。</p>
+<p>首先需要知道，hadoop数据本地化是指的map任务，reduce任务并不具备数据本地化特征。<br>   通常输入的数据首先在<strong>逻辑上</strong>（<strong>注意这里不是真正物理上划分</strong>）将会分片split，每个分片上构建一个map任务，由该任务执行执行用户自定义的map函数，从而处理分片中的每条记录。<br>   那么切片的大小一般是趋向一个HDFS的block块的大小。为什么最佳的分片大小是趋向block块的大小呢？是因为这样能够确保单节点上最大输入块的大小，如果分片跨越两个数据块，没有一个block能够同时存储这两块数据，因此需要通过网络传输将部分数据传输到map任务节点上。这样明显比使用本地数据的map效率更低。<br>    注意，map任务执行后的结果并没有写到HDFS中，而是作为中间结果存储到本地硬盘，那为什么没有存储到HDFS呢？因为，该中间结果会被reduce处理后产生最终结果后，该中间数据会被删除，如果存储到HDFS中，他会进行备份，这样明显没有意义。如果map将中间结果传输到reduce过程中出现了错误，Hadoop会在另一个节点上重新执行map产生中间结果。<br>    那么为什么reduce没有数据本地化的特点呢？对于单个reduce任务来说，他的输入通常是所有mapper经过排序输出，这些输出通过网络传输到reduce节点，数据在reduce节点合并然后由reduce函数进行处理。最终结果输出到HDFS上。当多个有reduce任务的时候，map会针对输出进行分区partition，也就是为每个reduce构建一个分区，分区是由用户指定的partition函数，效率很高。<br>   同时为了高效传输可以指定combiner函数，他的作用就是，<strong>减少网络传输和本地传输</strong></p>
+<p>假设文件是500mb</p>
+<p>long bytesRemaining &#x3D; length; 500mb</p>
+<p>​     while (((double) bytesRemaining)&#x2F;splitSize &gt; SPLIT_SLOP) {</p>
+<p>​      int blkIndex &#x3D; getBlockIndex(blkLocations, length-bytesRemaining  );</p>
+<p>​      splits.add(makeSplit(path, length-bytesRemaining 256 , splitSize 128,</p>
+<p>​            blkLocations[blkIndex].getHosts(),</p>
+<p>​            blkLocations[blkIndex].getCachedHosts()));</p>
+<p>​      bytesRemaining &#x3D; bytesRemaining-splitSize;116</p>
+<p>​     }</p>
+<p><strong>注意：将reduce端的聚合操作，放到map 进行执行。适合求和，计数，等一些等幂操作。不适合求平均值，次幂等类似操作</strong></p>
+</blockquote>
+<h2 id="优化2：Join（数据倾斜）"><a href="#优化2：Join（数据倾斜）" class="headerlink" title="优化2：Join（数据倾斜）"></a>优化2：Join（数据倾斜）</h2><blockquote>
+<p>MapReduce中的join</p>
+<p>　　其实就是类似于关系型数据库中的连接查询一样。需要计算的数据可能存储在不同的文件中或不同表中，两个文件又有一些相同的字段可以相互关联，这时候我们就可以通过这些关联字段将两个文件中的数据组合到一起进行计算了。</p>
+<p>　　我知道的mr有三种join方式。Map join、SemiJoin、reduce join。</p>
+<p>Reduce Join（我们之前做的代码连接就是这个方式）</p>
+<p>思路：</p>
+<p>　　分为两个阶段</p>
+<p>　　 （1）map函数主要是对不同文件中的数据打标签。</p>
+<p>　　（2）reduce函数获取key相同的value list，进行笛卡尔积。</p>
+<p>Map Join思路：</p>
+<p>　　比如有两个表，有一个表非常大，而另一个表非常小，以至于小表可以直接存放到内存中。这样，我们可以将小表复制多份，让每个map task内存中保存一个hash map，将小表数据放入这个hash map中，key是小表与大表的内个连接字段，value是小表一条记录，然后只扫描大表：对于大表中的每一条记录key&#x2F;value，在hash map中查找是否有相同的key的记录，如果有，则连接输出即可。</p>
+<p><strong>Semi Join 这个SemiJoin其实就是对reduce join的一种优化。</strong></p>
+<p>　　就是在map端过滤掉不参加join操作的数据，则可以大大减少数据量，提高网络传输速度。</p>
+<p>这三种join方式适用于不同的场景：</p>
+<p>　　Reduce join要考虑数据量过大时的网络传输问题。</p>
+<p>　　Map join和SemiJoin则要考虑数据量过大时的内存问题。 如果只考虑网络传输，忽略内存问题则。</p>
+<p>　　Map join效率最高，其次是SemiJoin，最低的是reduce join。</p>
+<p>DistributedCache DistributedCache是Hadoop提供的文件缓存工具，它能够自动将指定的文件分发到各个节点上，缓存到本地，供用户程序读取使用。一般用户数据字典的分发，和map join使用。一般缓存的文件都是只读。</p>
+</blockquote>
+<h2 id="优化3：根据实际情况调整切片大小"><a href="#优化3：根据实际情况调整切片大小" class="headerlink" title="优化3：根据实际情况调整切片大小"></a>优化3：根据实际情况调整切片大小</h2><blockquote>
+<p><strong>为什么默认切片是128MB和blk大小一致？（优化）</strong></p>
+<p>1 切片大小默认一致，是为了数据本地化，减少数据拉取消耗网络io</p>
+<p>2 并不是越大越好，也不是越小越好。根据集群的资源情况而定。</p>
+<p> 当集群计算资源充足的情况下：将切片的大小调小，增加map数量，提高读取效率。</p>
+<p> 当集群计算资源紧张的情况下：将切片的大小调大，减少资源占用，让任务正常运转。</p>
+<p> mapred.min.split.size、mapred.max.split.size、blockSize</p>
+</blockquote>
+<h2 id="优化4：可以设置yarn资源和队列。"><a href="#优化4：可以设置yarn资源和队列。" class="headerlink" title="优化4：可以设置yarn资源和队列。"></a>优化4：可以设置yarn资源和队列。</h2><blockquote>
+<p>调整计算资源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36753550/article/details/83065546">https://blog.csdn.net/qq_36753550/article/details/83065546</a></p>
+<p> 设置队列：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30607029/article/details/96507281">https://blog.csdn.net/weixin_30607029/article/details/96507281</a></p>
+<p>mr运行日志信息：百分比是按照完成的m或r的任务的个数&#x2F;m或r的总个数。</p>
+<p>MRv1&#x2F;MRv2&#x2F;YARN MRv1:</p>
+<p>　　对于经典的MRv1它由三部分组成 :</p>
+<p>　　　　编程模型、 数据处理引擎和运行时环境。</p>
+<p>　　　　编程模型由新旧 API 两部分组成，新旧api只是代码封装上略有变化，性能没变化。</p>
+<p>　　　　数据处理引擎由 MapTask 和 ReduceTask 组成。 运行时环境由 JobTracker 和 TaskTracker 两类服务组成。</p>
+<p>　　MRv2:</p>
+<p>　　　　由于MRv1对JobTracker的功能过多造成负载过重在扩展性、 资源利用率和多框架支持等方面存在不足，因此MRv2框架 的基本设计思想是将MRv1中的JobTracker包含的资源管理和应用管理两部分功能进行拆分，分别交给两个进程实现。 资源管理进程与具体应用程序无关，它负责整个集群的资源管理（内存、 CPU、 磁盘）。 应用管理进程负责管理应用程序，并且每个应用管理进程只管理一个作业。 由于资源管理可以共享给其他框架使用，因此MRv2将其做成了一个通用的系统YARN,YARN系统使得MRv2计算框架在可扩展性，资源利用率，多框架支持方面得到了很大改进。</p>
+<p>　　YARN：yarn由4部分组成。</p>
+<p>　　　　1. ResourceManager主要功能是：</p>
+<p>　　　　　　（1）接收用户请求</p>
+<p>　　　　　　（2）管理调度资源</p>
+<p>　　　　　　（3）启动管理am　　　　</p>
+<p>　　　　　　（4）管理所有nm,处理nm的状态汇报，向nm下达命令。</p>
+<p>　2.Container：yarn的应用都是运行在容器上的，容器包含cpu，内存等信息。</p>
+<p>　3.NodeManager：NM是每个节点上的资源和任务管理器，它会定时地向RM汇报本节点上的资源使用情况和各个容器的运行状态；同时负责对容器的启动和停止。</p>
+<p>　　　　4. ApplicationMaster：管理应用程序。向RM获取资源、为应用程序分配任务、 监控所有任务运行状态。</p>
+<ol>
+<li>作业提交</li>
+</ol>
+<p>　　首先我们将任务提交给JobClient,JobClient会向RM获取一个appId。 然后我们的JobClient会对作业进行处理, 切分InputSplit, 将作业的Jar包, 配置文件和拷贝InputSplit信息拷贝到HDFS。 最后, 通过调用RM的submitApplication()来提交作业。</p>
+<ol start="2">
+<li>作业初始化</li>
+</ol>
+<p>　　当RM收到submitApplciation()的请求时, 就将该请求发给调度器, 调度器分配第一个容器, 然后RM在该容器内启动ApplicationMaster进程。该进程上运行着一个MRAppMaster的Java应用。其通过创造一些bookkeeping对象来监控作业的进度。 然后通过hdfs得到由JobClient已经处理好的作业信息。为每个Inputsplit创建一个map任务, 并创建相应的reduce任务。然后ApplicationMaster会对整个作业量进行判断，<strong>如果作业量很小, ApplicationMaster会选择在其自己的JVM中运行任务</strong>, <strong>这种作业称作是uber task的方式</strong>。在任务运行之前, 作业的<strong>setup</strong>方法被调用来创建输出路径。</p>
+<ol start="3">
+<li>任务分配</li>
+</ol>
+<p>　　如果不是小作业, 那么ApplicationMaster向RM请求更多的容器来运行所有的map和reduce任务，<strong>每个容器只能对应一个任务</strong>。这些请求是通过心跳来传输的, 包括每个map任务的数据位置, 比如Inputsplit的主机名和机架。调度器利用这些信息来调度任务, 尽量将任务分配给有存储数据的节点, 或者分配给和存放Inputsplit的节点相同机架的节点。</p>
+<ol start="4">
+<li>任务运行</li>
+</ol>
+<p>　　当一个任务由RM的调度器分配了一个容器后, ApplicationMaster与NM通信来启动容器。任务由一个为YarnChild的Java应用执行。在运行任务之前首先本地化任务需要的资源, 比如作业配置, JAR文件, 以及hdfs中保存的任务所需的所有文件。最后, map任务或者reduce运行在一个叫YarnChild的进程当中。</p>
+<ol start="5">
+<li>进度和状态更新</li>
+</ol>
+<p>　　每个NM会向applicationmaster汇报自己的工作状态，JobClient会每秒轮询检测applicationmaster，这样就能随时收到更新信息。</p>
+<ol start="6">
+<li>作业完成</li>
+</ol>
+<p>　　除了向applicationmaster请求作业进度外, JobClient每5分钟都会通过调用waitForCompletion()来检查作业是否完成。作业完成之后,applicationmaster和NM会清理工作状态, OutputCommiter的作业清理方法也会被调用. 作业的信息会被作业历史服务器存储以备之后用户核查.</p>
+<p><strong>yarn对异常task的处理（推测执行）？(重要！！！)</strong></p>
+<p>　　推测执行是在分布式环境下，因为某种原因造成同一个job的多个task运行速度不一致，有的task运行速度明显慢于其他task，则这些task拖慢了整个job的执行进度，为了避免这种情况发生，Hadoop会为该task启动备份任务，让该speculative task与原始task同时处理一份数据，哪个先运行完，则将谁的结果作为最终结果。推测执行优化机制采用了<strong>典型的以空间换时间的优化策略</strong>，它同时启动多个相同task（备份任务）处理相同的数据块，哪个完成的早，则采用哪个task的结果，这样可防止拖后腿Task任务出现，进而提高作业计算速度，但是，这样却会占用更多的资源。</p>
+<p><strong>yarn调度器的策略？(重要！！！)</strong></p>
+<p>　　yarn默认是计算能力调度 FifoScheduler:根据先进先出排队，最简单的调度器。  FIFO</p>
+<p>​        CapacityScheduler(计算能力调度)、FairScheduler(公平调度)：</p>
+<p>　　相同点：</p>
+<p>　　　　(1)都是多队列。</p>
+<p>　　　　(2)都有资源最大最小上线限制。</p>
+<p>　　　　(3)都是资源共享，每个队列剩余的资源可以给其他队列使用。</p>
+<p>　　不同点：</p>
+<p>　　　　(1)队列排序算法不同：计算能力调度资源使用量小的优先。公平调度根据公平排序算法排序。</p>
+<p>　　　　(2)应该用选择算法不同：计算能力调度是先进先出。公平调度先进先出或者公平排序算法。</p>
+<p>　　　　(3)资源抢占：公平调度如果当前队列有新应用提交后，会把共享出去的资源抢夺回来。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">秋水一色</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/05/27/Hadoop%E6%A1%88%E4%BE%8B%E5%92%8C%E4%BC%98%E5%8C%96/">http://example.com/2022/05/27/Hadoop%E6%A1%88%E4%BE%8B%E5%92%8C%E4%BC%98%E5%8C%96/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Notes</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hadoop/">Hadoop</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/05/31/Hive%E6%A6%82%E8%BF%B0%E5%92%8C%E5%AE%89%E8%A3%85/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Hive概述和安装</div></div></a></div><div class="next-post pull-right"><a href="/2022/05/26/Hadoop-MapReduce/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hadoop-MapReduce</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/05/23/Hadoop-2.7.6-%E5%9F%BA%E7%A1%80/" title="Hadoop-2.7.6-基础"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-23</div><div class="title">Hadoop-2.7.6-基础</div></div></a></div><div><a href="/2022/05/24/Hadoop%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3/" title="Hadoop进程相关"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-24</div><div class="title">Hadoop进程相关</div></div></a></div><div><a href="/2022/05/26/Hadoop-MapReduce/" title="Hadoop-MapReduce"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-26</div><div class="title">Hadoop-MapReduce</div></div></a></div><div><a href="/2022/05/22/Hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%EF%BC%88%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%EF%BC%89/" title="Hadoop集群搭建（完全分布式）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-22</div><div class="title">Hadoop集群搭建（完全分布式）</div></div></a></div><div><a href="/2022/05/25/Hadoop%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%EF%BC%88HA%EF%BC%89/" title="Hadoop高可用集群搭建（HA）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-25</div><div class="title">Hadoop高可用集群搭建（HA）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/mD5ZV7wdUBGl62S.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">秋水一色</div><div class="author-info__description">春风得意马蹄疾,一日看尽长安花</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hzh4015"><i class="fab fa-github"></i><span>一起学习，加油！</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/hzh4015" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:hzh4015@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2597845702&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这是我的第一个笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hadoop%E4%BC%98%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">Hadoop优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%961%EF%BC%9ACombiner"><span class="toc-number">1.1.</span> <span class="toc-text">优化1：Combiner</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%962%EF%BC%9AJoin%EF%BC%88%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">优化2：Join（数据倾斜）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%963%EF%BC%9A%E6%A0%B9%E6%8D%AE%E5%AE%9E%E9%99%85%E6%83%85%E5%86%B5%E8%B0%83%E6%95%B4%E5%88%87%E7%89%87%E5%A4%A7%E5%B0%8F"><span class="toc-number">1.3.</span> <span class="toc-text">优化3：根据实际情况调整切片大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%964%EF%BC%9A%E5%8F%AF%E4%BB%A5%E8%AE%BE%E7%BD%AEyarn%E8%B5%84%E6%BA%90%E5%92%8C%E9%98%9F%E5%88%97%E3%80%82"><span class="toc-number">1.4.</span> <span class="toc-text">优化4：可以设置yarn资源和队列。</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/05/31/Hive%E6%A6%82%E8%BF%B0%E5%92%8C%E5%AE%89%E8%A3%85/" title="Hive概述和安装"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hive概述和安装"/></a><div class="content"><a class="title" href="/2022/05/31/Hive%E6%A6%82%E8%BF%B0%E5%92%8C%E5%AE%89%E8%A3%85/" title="Hive概述和安装">Hive概述和安装</a><time datetime="2022-05-30T16:00:00.000Z" title="发表于 2022-05-31 00:00:00">2022-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/27/Hadoop%E6%A1%88%E4%BE%8B%E5%92%8C%E4%BC%98%E5%8C%96/" title="Hadoop的一些优化"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hadoop的一些优化"/></a><div class="content"><a class="title" href="/2022/05/27/Hadoop%E6%A1%88%E4%BE%8B%E5%92%8C%E4%BC%98%E5%8C%96/" title="Hadoop的一些优化">Hadoop的一些优化</a><time datetime="2022-05-26T16:00:00.000Z" title="发表于 2022-05-27 00:00:00">2022-05-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/26/Hadoop-MapReduce/" title="Hadoop-MapReduce"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hadoop-MapReduce"/></a><div class="content"><a class="title" href="/2022/05/26/Hadoop-MapReduce/" title="Hadoop-MapReduce">Hadoop-MapReduce</a><time datetime="2022-05-25T16:00:00.000Z" title="发表于 2022-05-26 00:00:00">2022-05-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/25/Hadoop%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%EF%BC%88HA%EF%BC%89/" title="Hadoop高可用集群搭建（HA）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hadoop高可用集群搭建（HA）"/></a><div class="content"><a class="title" href="/2022/05/25/Hadoop%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%EF%BC%88HA%EF%BC%89/" title="Hadoop高可用集群搭建（HA）">Hadoop高可用集群搭建（HA）</a><time datetime="2022-05-24T16:00:00.000Z" title="发表于 2022-05-25 00:00:00">2022-05-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/24/Hadoop%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3/" title="Hadoop进程相关"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hadoop进程相关"/></a><div class="content"><a class="title" href="/2022/05/24/Hadoop%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3/" title="Hadoop进程相关">Hadoop进程相关</a><time datetime="2022-05-23T16:00:00.000Z" title="发表于 2022-05-24 00:00:00">2022-05-24</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 秋水一色</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
