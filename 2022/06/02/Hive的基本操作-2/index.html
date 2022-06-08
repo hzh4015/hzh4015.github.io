@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Hive的基本操作-2 | Notes</title><meta name="keywords" content="Hive 大数据"><meta name="author" content="秋水一色"><meta name="copyright" content="秋水一色"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对学习Hive的一些知识笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hive的基本操作-2">
+<meta property="og:url" content="http://example.com/2022/06/02/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-2/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="对学习Hive的一些知识笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png">
+<meta property="article:published_time" content="2022-06-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-08T07:02:58.058Z">
+<meta property="article:author" content="秋水一色">
+<meta property="article:tag" content="Hive">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/02/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hive的基本操作-2',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-08 15:02:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/mD5ZV7wdUBGl62S.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Notes</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hive的基本操作-2</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-01T16:00:00.000Z" title="发表于 2022-06-02 00:00:00">2022-06-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-08T07:02:58.058Z" title="更新于 2022-06-08 15:02:58">2022-06-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hive的基本操作-2"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="1、Hive分区"><a href="#1、Hive分区" class="headerlink" title="1、Hive分区"></a>1、Hive分区</h2><blockquote>
+<p>在大数据中，最常见的一种思想就是<strong>分治</strong>，我们可以<strong>把大的文件切割划分成一个个的小的文件</strong>，这样每次操作一个个小的文件就会很容易了，同样的道理，在hive当中也是支持这种思想的，就是我们可以把大的数据，按照每天或者每小时切分成一个个小的文件，这样去操作小的文件就会容易很多了。</p>
+<p>假如现在我们公司一天产生3亿的数据量，那么为了方便管理和查询，就做以下的事情。</p>
+<p>​        1）建立分区（可按照日期，部门等等具体业务分区）</p>
+<p>​        2）分门别类的管理</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/03/QdRsgvWS7yYnN13.png" alt="hive分区的种类.png"></p>
+<h3 id="1-2-静态分区（SP）"><a href="#1-2-静态分区（SP）" class="headerlink" title="1.2    静态分区（SP）"></a>1.2    静态分区（SP）</h3><blockquote>
+<p>静态分区（SP）static partition–partition by (字段 类型)</p>
+<p>​        <strong>借助于物理的文件夹分区，实现快速检索的目的。</strong></p>
+<p>​        <strong>一般对于查询比较频繁的列设置为分区列。</strong></p>
+<p>​        <strong>分区查询的时候直接把对应分区中所有数据放到对应的文件夹中</strong>。</p>
+</blockquote>
+<blockquote>
+<p>创建单分区表语法：</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> t_student (</span><br><span class="line">sno <span class="type">int</span>,</span><br><span class="line">sname string</span><br><span class="line">) partitioned <span class="keyword">by</span>(grade <span class="type">int</span>)</span><br><span class="line"><span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span>;</span><br><span class="line"><span class="comment">--  分区的字段不要和表的字段相同。相同会报错error10035</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">1</span>,xiaohu01,<span class="number">1</span></span><br><span class="line"><span class="number">2</span>,xiaohu02,<span class="number">1</span></span><br><span class="line"><span class="number">3</span>,xiaohu03,<span class="number">1</span></span><br><span class="line"><span class="number">4</span>,xiaohu04,<span class="number">1</span></span><br><span class="line"><span class="number">5</span>,xiaohu05,<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">6</span>,xiaohu06,<span class="number">2</span></span><br><span class="line"><span class="number">7</span>,xiaohu07,<span class="number">2</span></span><br><span class="line"><span class="number">8</span>,xiaohu08,<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="number">9</span>,xiaohu09,<span class="number">3</span></span><br><span class="line"><span class="number">10</span>,xiaohu10,<span class="number">3</span></span><br><span class="line"><span class="number">11</span>,xiaohu11,<span class="number">3</span></span><br><span class="line"><span class="number">12</span>,xiaohu12,<span class="number">3</span></span><br><span class="line"><span class="number">13</span>,xiaohu13,<span class="number">3</span></span><br><span class="line"><span class="number">14</span>,xiaohu14,<span class="number">3</span></span><br><span class="line"><span class="number">15</span>,xiaohu15,<span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="number">16</span>,xiaohu16,<span class="number">4</span></span><br><span class="line"><span class="number">17</span>,xiaohu17,<span class="number">4</span></span><br><span class="line"><span class="number">18</span>,xiaohu18,<span class="number">4</span></span><br><span class="line"><span class="number">19</span>,xiaohu19,<span class="number">4</span></span><br><span class="line"><span class="number">20</span>,xiaohu20,<span class="number">4</span></span><br><span class="line"><span class="number">21</span>,xiaohu21,<span class="number">4</span></span><br><span class="line"><span class="comment">-- 载入数据</span></span><br><span class="line"><span class="comment">-- 将相应年级一次导入</span></span><br><span class="line">load data <span class="keyword">local</span> inpath <span class="string">&#x27;/usr/local/soft/shujia/student1.txt&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> t_student <span class="keyword">partition</span>(grade<span class="operator">=</span><span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 演示多拷贝一行上传，分区的列的值是分区的值，不是原来的值</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>静态多分区表语法：</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> t_teacher (</span><br><span class="line">tno <span class="type">int</span>,</span><br><span class="line">tname string</span><br><span class="line">) partitioned <span class="keyword">by</span>(grade <span class="type">int</span>,clazz <span class="type">int</span>)</span><br><span class="line"><span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">--注意：前后两个分区的关系为父子关系，也就是grade文件夹下面有多个clazz子文件夹。</span></span><br><span class="line"><span class="number">1</span>,xiaoge01,<span class="number">1</span>,<span class="number">1</span></span><br><span class="line"><span class="number">2</span>,xiaoge02,<span class="number">1</span>,<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span>,xiaoge03,<span class="number">1</span>,<span class="number">2</span></span><br><span class="line"><span class="number">4</span>,xiaoge04,<span class="number">1</span>,<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="number">5</span>,xiaoge05,<span class="number">1</span>,<span class="number">3</span></span><br><span class="line"><span class="number">6</span>,xiaoge06,<span class="number">1</span>,<span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span>,xiaoge07,<span class="number">2</span>,<span class="number">1</span></span><br><span class="line"><span class="number">8</span>,xiaoge08,<span class="number">2</span>,<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">9</span>,xiaoge09,<span class="number">2</span>,<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--载入数据</span></span><br><span class="line">load data <span class="keyword">local</span> inpath <span class="string">&#x27;/usr/local/soft/shujia/teacher11.txt&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> t_teacher <span class="keyword">partition</span>(grade<span class="operator">=</span><span class="number">1</span>,clazz<span class="operator">=</span><span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>分区表查询</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> t_student <span class="keyword">where</span> grade <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> 全表扫描，不推荐，效率低</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> students_pt1;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> 使用<span class="keyword">where</span>条件进行分区裁剪，避免了全表扫描，效率高</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> students_pt1 <span class="keyword">where</span> grade <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> 也可以在<span class="keyword">where</span>条件中使用非等值判断</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> students_pt1 <span class="keyword">where</span> grade<span class="operator">&lt;</span><span class="number">3</span> <span class="number">1</span> <span class="keyword">and</span> grade<span class="operator">&gt;=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看分区</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> partitions t_student;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>添加分区</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t_student <span class="keyword">add</span> <span class="keyword">partition</span> (grade<span class="operator">=</span><span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t_student <span class="keyword">add</span> <span class="keyword">partition</span> (grade<span class="operator">=</span><span class="number">5</span>) location <span class="string">&#x27;指定数据文件的路径&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>删除分区</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t_student <span class="keyword">drop</span> <span class="keyword">partition</span> (grade<span class="operator">=</span><span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-动态分区（DP）"><a href="#1-3-动态分区（DP）" class="headerlink" title="1.3    动态分区（DP）"></a>1.3    动态分区（DP）</h3><ul>
+<li>动态分区（DP）dynamic partition</li>
+<li>静态分区与动态分区的<strong>主要区别在于静态分区是手动指定，而动态分区是通过数据来进行判断。</strong></li>
+<li>详细来说，静态分区的列是在编译时期通过用户传递来决定的；<strong>动态分区只有在SQL执行时才能决定</strong>。</li>
+</ul>
+<blockquote>
+<p>开启动态分区首先要在hive会话中设置如下的参数</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 表示开启动态分区</span><br><span class="line">hive<span class="operator">&gt;</span> <span class="keyword">set</span> hive.exec.dynamic.partition<span class="operator">=</span><span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"># 表示动态分区模式：strict（需要配合静态分区一起使用）、nostrict</span><br><span class="line"># strict： <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">table</span> students_pt <span class="keyword">partition</span>(dt<span class="operator">=</span><span class="string">&#x27;anhui&#x27;</span>,pt) <span class="keyword">select</span> ......,pt <span class="keyword">from</span> students;</span><br><span class="line">hive<span class="operator">&gt;</span> <span class="keyword">set</span> hive.exec.dynamic.partition.mode<span class="operator">=</span>nonstrict;</span><br><span class="line"></span><br><span class="line"># 表示支持的最大的分区数量为<span class="number">1000</span>，可以根据业务自己调整</span><br><span class="line">hive<span class="operator">&gt;</span> <span class="keyword">set</span> hive.exec.max.dynamic.partitions.pernode<span class="operator">=</span><span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其余的参数详细配置如下</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">设置为<span class="literal">true</span>表示开启动态分区的功能（默认为<span class="literal">false</span>）</span><br><span class="line"><span class="comment">--hive.exec.dynamic.partition=true;</span></span><br><span class="line"></span><br><span class="line">设置为nonstrict，表示允许所有分区都是动态的（默认为strict）</span><br><span class="line"><span class="comment">-- hive.exec.dynamic.partition.mode=nonstrict; </span></span><br><span class="line"></span><br><span class="line">每个mapper或reducer可以创建的最大动态分区个数(默认为<span class="number">100</span>) </span><br><span class="line">比如：源数据中包含了一年的数据，即<span class="keyword">day</span>字段有<span class="number">365</span>个值，那么该参数就需要设置成大于<span class="number">365</span>，如果使用默认值<span class="number">100</span>，则会报错</span><br><span class="line"><span class="comment">--hive.exec.max.dynamic.partition.pernode=100; </span></span><br><span class="line"></span><br><span class="line">一个动态分区创建可以创建的最大动态分区个数（默认值<span class="number">1000</span>）</span><br><span class="line"><span class="comment">--hive.exec.max.dynamic.partitions=1000;</span></span><br><span class="line"></span><br><span class="line">全局可以创建的最大文件个数（默认值<span class="number">100000</span>）</span><br><span class="line"><span class="comment">--hive.exec.max.created.files=100000; </span></span><br><span class="line"></span><br><span class="line">当有空分区产生时，是否抛出异常（默认<span class="literal">false</span>） </span><br><span class="line"><span class="comment">-- hive.error.on.empty.partition=false;  </span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>案例1： 动态插入学生年级班级信息</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--创建分区表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> t_student_d (</span><br><span class="line">sno <span class="type">int</span>,</span><br><span class="line">sname string</span><br><span class="line">) partitioned <span class="keyword">by</span> (grade <span class="type">int</span>,clazz <span class="type">int</span>)</span><br><span class="line"><span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">--创建外部表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> t_student_e (</span><br><span class="line">sno <span class="type">int</span>,</span><br><span class="line">sname string,</span><br><span class="line">grade <span class="type">int</span>,</span><br><span class="line">clazz <span class="type">int</span></span><br><span class="line">) </span><br><span class="line"><span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span></span><br><span class="line">location &quot;/shujia/student&quot;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">数据：</span><br><span class="line"></span><br><span class="line">1,xiaohu01,1,1</span><br><span class="line">2,xiaohu02,1,1</span><br><span class="line">3,xiaohu03,1,1</span><br><span class="line">4,xiaohu04,1,2</span><br><span class="line">5,xiaohu05,1,2</span><br><span class="line">6,xiaohu06,2,3</span><br><span class="line">7,xiaohu07,2,3</span><br><span class="line">8,xiaohu08,2,3</span><br><span class="line">9,xiaohu09,3,3</span><br><span class="line">10,xiaohu10,3,3</span><br><span class="line">11,xiaohu11,3,3</span><br><span class="line">12,xiaohu12,3,4</span><br><span class="line">13,xiaohu13,3,4</span><br><span class="line">14,xiaohu14,3,4</span><br><span class="line">15,xiaohu15,3,4</span><br><span class="line">16,xiaohu16,4,4</span><br><span class="line">17,xiaohu17,4,4</span><br><span class="line">18,xiaohu18,4,5</span><br><span class="line">19,xiaohu19,4,5</span><br><span class="line">20,xiaohu20,4,5</span><br><span class="line">21,xiaohu21,4,5</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果静态分区的话，我们插入数据必须指定分区的值。</p>
+<p>如果想要插入多个班级的数据，我要写很多SQL并且执行24次很麻烦。</p>
+<p>而且静态分区有可能会产生数据错误问题</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 会报错 </span></span><br><span class="line"><span class="keyword">insert</span> overwrite <span class="keyword">table</span> t_student_d <span class="keyword">partition</span> (grade<span class="operator">=</span><span class="number">1</span>) <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> t_student_e <span class="keyword">where</span> grade<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果使用动态分区，动态分区会根据select的结果自动判断数据应该load到哪儿分区去。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> overwrite <span class="keyword">table</span> t_student_d <span class="keyword">partition</span> (grade,clazz) <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> t_student_e;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>优点：不用手动指定了，自动会对数据进行分区</p>
+<p>缺点：可能会出现数据倾斜</p>
+</blockquote>
+<h2 id="2、Hive分桶"><a href="#2、Hive分桶" class="headerlink" title="2、Hive分桶"></a>2、Hive分桶</h2><h3 id="2-1-业务场景"><a href="#2-1-业务场景" class="headerlink" title="2.1    业务场景"></a>2.1    业务场景</h3><blockquote>
+<p>数据分桶的适用场景：<br>        分区提供了一个隔离数据和优化查询的便利方式，不过并非所有的数据都可形成合理的分区，尤其是需要确定合适大小的分区划分方式<br>        不合理的数据分区划分方式可能导致有的分区数据过多，而某些分区没有什么数据的尴尬情况<br>        分桶是将数据集分解为更容易管理的若干部分的另一种技术。<br>        分桶就是将数据按照字段进行划分，可以将数据按照字段划分到多个文件当中去。</p>
+</blockquote>
+<h3 id="2-2-数据分桶原理"><a href="#2-2-数据分桶原理" class="headerlink" title="2.2    数据分桶原理"></a>2.2    数据分桶原理</h3><ul>
+<li>Hive采用对列值哈希，然后除以桶的个数求余的方式决定该条记录存放在哪个桶当中。<ul>
+<li>bucket num &#x3D; hash_function(bucketing_column) mod num_buckets</li>
+<li>列的值做哈希取余 决定数据应该存储到哪个桶</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-数据分桶优势"><a href="#2-3-数据分桶优势" class="headerlink" title="2.3    数据分桶优势"></a>2.3    数据分桶优势</h3><blockquote>
+<p><strong>方便抽样</strong></p>
+<p>​        使取样（sampling）更高效。在处理大规模数据集时，在开发和修改查询的阶段，如果能在数据集的一小部分数据上试运行查询，会带来很多方便</p>
+<p><strong>提高join查询效率</strong></p>
+<p>​        获得更高的查询处理效率。桶为表加上了额外的结构，Hive 在处理有些查询时能利用这个结构。具体而言，连接两个在（包含连接列的）相同列上划分了桶的表，可以使用 Map 端连接 （Map-side join）高效的实现。比如JOIN操作。对于JOIN操作两个表有一个相同的列，如果对这两个表都进行了桶操作。那么将保存相同列值的桶进行JOIN操作就可以，可以大大较少JOIN的数据量。</p>
+</blockquote>
+<h3 id="2-4-分桶实战"><a href="#2-4-分桶实战" class="headerlink" title="2.4    分桶实战"></a>2.4    分桶实战</h3><blockquote>
+<p>​    首先，分区和分桶是两个不同的概念，很多资料上说需要先分区在分桶，其实不然，分区是对数据进行划分，而分桶是对文件进行划分。</p>
+<p>​    当我们的分区之后，最后的文件还是很大怎么办，就引入了分桶的概念。</p>
+<p>将这个比较大的文件再分成若干个小文件进行存储，我们再去查询的时候，在这个小范围的文件中查询就会快很多。</p>
+<p>​        对于hive中的每一张表、分区都可以进一步的进行分桶。</p>
+<p>​        当然，分桶不是说将文件随机进行切分存储，而是有规律的进行存储。在看完下面的例子后进行解释，现在干巴巴的解释也不太好理解。它是由列的哈希值除以桶的个数来决定每条数据划分在哪个桶中。</p>
+<p>创建顺序和分区一样，创建的方式不一样。</p>
+</blockquote>
+<blockquote>
+<p><strong>首先我们需要开启分桶的支持</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">（依然十分重要，不然无法进行分桶操作！！！！）</span><br><span class="line"><span class="keyword">set</span> hive.enforce.bucketing<span class="operator">=</span><span class="literal">true</span>; </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>数据准备（id,name,age）</strong></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1,tom,11</span><br><span class="line">2,cat,22</span><br><span class="line">3,dog,33</span><br><span class="line">4,hive,44</span><br><span class="line">5,hbase,55</span><br><span class="line">6,mr,66</span><br><span class="line">7,alice,77</span><br><span class="line">8,scala,88</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>创建一个普通的表</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> psn31</span><br><span class="line">(</span><br><span class="line">id <span class="type">int</span>,</span><br><span class="line">name string,</span><br><span class="line">age <span class="type">int</span></span><br><span class="line">)</span><br><span class="line"><span class="type">row</span> format delimited</span><br><span class="line">fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>将数据load到这张表中</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">load data <span class="keyword">local</span> inpath <span class="string">&#x27;文件在Linux上的绝对路径&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> psn31;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>创建分桶表</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> psn_bucket</span><br><span class="line">(</span><br><span class="line">id <span class="type">int</span>,</span><br><span class="line">name string,</span><br><span class="line">age <span class="type">int</span></span><br><span class="line">)</span><br><span class="line">clustered <span class="keyword">by</span>(age) <span class="keyword">into</span> <span class="number">4</span> buckets</span><br><span class="line"><span class="type">row</span> format delimited</span><br><span class="line">fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>将数据insert到表psn_bucket中</strong></p>
+<p><strong>(注意：这里和分区表插入数据有所区别，分区表需要select 和指定分区，而分桶则不需要)</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> psn_bucket <span class="keyword">select</span> id,name,age <span class="keyword">from</span> psn31;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>在HDFS上查看数据</strong></p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/08/xOIdzYoEqhRLe4g.png" alt="image-20220601223434297.png"></p>
+<blockquote>
+<p><strong>查询数据</strong></p>
+<p><strong>我们在linux中使用Hadoop的命令查看一下（与我们猜想的顺序一致）</strong></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hadoop fs -cat /user/hive/warehouse/bigdata17.db/psn_bucket/*</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里设置的桶的个数是4 数据按照 年龄%4 进行放桶(文件)<br>11%4 &#x3D;&#x3D; 3 —–&gt; 000003_0<br>22%4 &#x3D;&#x3D; 2 —–&gt; 000002_0<br>33%4 &#x3D;&#x3D; 1 —–&gt; 000001_0<br>44%4 &#x3D;&#x3D; 0 —–&gt; 000000_0<br>…以此类推</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/08/smJGetELUTlaIuo.png" alt="分桶逻辑发逻辑.png"></p>
+<blockquote>
+<p>在Hive进行查询</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- tablesample是抽样语句，语法：TABLESAMPLE(BUCKET x OUT OF y)</span></span><br><span class="line"><span class="comment">-- 分桶语句中的分母表示的是数据将会被散列的桶的个数，分子表示将会选择的桶的个数。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- x表示从哪个bucket开始抽取。</span></span><br><span class="line"><span class="comment">-- 例如，table总bucket数为32，tablesample(bucket 2 out of 2)</span></span><br><span class="line"><span class="comment">-- 表示总共抽取（2/2=）1个bucket的数据，分别为第2个bucket和第（2+2=）4个bucket的数据</span></span><br><span class="line"><span class="comment">-- y必须是table总bucket数的倍数或者因子。hive根据y的大小，决定抽样的比例。</span></span><br><span class="line"><span class="comment">-- 例如，table总共分了4份，当y=2时，抽取(4/2=)2个bucket的数据，当y=8时，抽取(4/8=)1/2个bucket的数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> psn_bucket <span class="keyword">tablesample</span>(bucket <span class="number">2</span> <span class="keyword">out</span> <span class="keyword">of</span> <span class="number">2</span>);</span><br><span class="line">随机取值（设置因子，桶的个数<span class="operator">/</span>因子）</span><br><span class="line">这里就是取<span class="number">2</span>号桶和<span class="number">4</span>号桶，取<span class="number">2</span>个</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> psn_bucket <span class="keyword">tablesample</span>(bucket <span class="number">2</span> <span class="keyword">out</span> <span class="keyword">of</span> <span class="number">4</span>);</span><br><span class="line">随机取值（设置因子，桶的个数<span class="operator">/</span>因子）</span><br><span class="line">这里就是取<span class="number">2</span>号桶，取一个</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> psn_bucket <span class="keyword">tablesample</span>(bucket <span class="number">2</span> <span class="keyword">out</span> <span class="keyword">of</span> <span class="number">8</span>);</span><br><span class="line">随机取值（设置倍数，倍数<span class="operator">/</span>桶的个数）</span><br><span class="line">这里就是取<span class="number">2</span>号桶 <span class="number">1</span><span class="operator">/</span><span class="number">2</span>个数据</span><br><span class="line">取出来是一条数据</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、Hive-JDBC"><a href="#3、Hive-JDBC" class="headerlink" title="3、Hive JDBC"></a>3、Hive JDBC</h2><h5 id="启动hiveserver2"><a href="#启动hiveserver2" class="headerlink" title="启动hiveserver2"></a>启动hiveserver2</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hive --service hiveserver2 &amp;</span><br><span class="line">或者</span><br><span class="line">hiveserver2 &amp;</span><br></pre></td></tr></table></figure>
+
+<h5 id="新建maven项目并添加两个依赖"><a href="#新建maven项目并添加两个依赖" class="headerlink" title="新建maven项目并添加两个依赖"></a>新建maven项目并添加两个依赖</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;hadoop-common&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.7.6&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- https://mvnrepository.com/artifact/org.apache.hive/hive-jdbc --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.hive&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;hive-jdbc&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.2.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="编写JDBC代码"><a href="#编写JDBC代码" class="headerlink" title="编写JDBC代码"></a>编写JDBC代码</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HiveJDBC</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException, SQLException &#123;</span><br><span class="line">        Class.forName(<span class="string">&quot;org.apache.hive.jdbc.HiveDriver&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(<span class="string">&quot;jdbc:hive2://master:10000/bigdata17&quot;</span>);</span><br><span class="line">        <span class="type">Statement</span> <span class="variable">stat</span> <span class="operator">=</span> conn.createStatement();</span><br><span class="line">        <span class="type">ResultSet</span> <span class="variable">rs</span> <span class="operator">=</span> stat.executeQuery(<span class="string">&quot;select * from students limit 10&quot;</span>);</span><br><span class="line">        <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">id</span> <span class="operator">=</span> rs.getInt(<span class="number">1</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> rs.getString(<span class="number">2</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">age</span> <span class="operator">=</span> rs.getInt(<span class="number">3</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">gender</span> <span class="operator">=</span> rs.getString(<span class="number">4</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">clazz</span> <span class="operator">=</span> rs.getString(<span class="number">5</span>);</span><br><span class="line">            System.out.println(id + <span class="string">&quot;,&quot;</span> + name + <span class="string">&quot;,&quot;</span> + age + <span class="string">&quot;,&quot;</span> + gender + <span class="string">&quot;,&quot;</span> + clazz);</span><br><span class="line">        &#125;</span><br><span class="line">        rs.close();</span><br><span class="line">        stat.close();</span><br><span class="line">        conn.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、Hive查询语法-DQL"><a href="#4、Hive查询语法-DQL" class="headerlink" title="4、Hive查询语法(DQL)"></a>4、Hive查询语法(DQL)</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> [<span class="keyword">ALL</span> <span class="operator">|</span> <span class="keyword">DISTINCT</span>] select_expr, select_expr, ...</span><br><span class="line"><span class="keyword">FROM</span> table_reference</span><br><span class="line">[<span class="keyword">WHERE</span> where_condition]</span><br><span class="line">[<span class="keyword">GROUP</span> <span class="keyword">BY</span> col_list]</span><br><span class="line">[<span class="keyword">ORDER</span> <span class="keyword">BY</span> col_list]</span><br><span class="line">[CLUSTER <span class="keyword">BY</span> col_list</span><br><span class="line"><span class="operator">|</span> [DISTRIBUTE <span class="keyword">BY</span> col_list] [SORT <span class="keyword">BY</span> col_list]</span><br><span class="line">]</span><br><span class="line">[LIMIT [<span class="keyword">offset</span>,] <span class="keyword">rows</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-1-全局排序"><a href="#4-1-全局排序" class="headerlink" title="4.1    全局排序"></a>4.1    全局排序</h3><ul>
+<li><strong>order by 会对输入做全局排序，因此只有一个reducer</strong>，会导致当输入规模较大时，需要较长的计算时间</li>
+<li>使用 order by子句排序 :ASC（ascend）升序（默认）| DESC（descend）降序</li>
+<li><strong>order by放在select语句的结尾</strong></li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> 表名 <span class="keyword">order</span> <span class="keyword">by</span> 字段名<span class="number">1</span>[，别名<span class="number">2.</span>..];</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-局部排序"><a href="#4-2-局部排序" class="headerlink" title="4.2    局部排序"></a>4.2    局部排序</h3><ul>
+<li><strong>sort by 不是全局排序,其在数据进入reducer前完成排序</strong>。</li>
+<li>如果用sort by进行排序，并且设置mapred.reduce.tasks&gt;1,则sort by 只保证每个reducer的输出有序，<strong>不保证全局有序</strong>。asc,desc</li>
+<li>设置reduce个数</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> mapreduce.job.reduce<span class="operator">=</span><span class="number">3</span>;</span><br><span class="line"><span class="keyword">set</span> mapred.reduce.tasks<span class="operator">=</span><span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看reduce个数</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> mapreduce.job.reduce;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>排序</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> 表名 sort <span class="keyword">by</span> 字段名[,字段名...];</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-分区排序"><a href="#4-3-分区排序" class="headerlink" title="4.3    分区排序"></a>4.3    分区排序</h3><blockquote>
+<p><strong>distribute by（字段）根据指定的字段将数据</strong>分到不同的reducer，且分发算法是hash散列。</p>
+<p><strong>类似MR中partition,进行分区，结合sort by使用。</strong>（注意：distribute by 要在sort by之前）</p>
+<p>对于distrbute by 进行测试，一定要多分配reduce进行处理，否则无法看到distribute by的效果。</p>
+<p>设置reduce个数</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> mapreduce.job.reduce<span class="operator">=</span><span class="number">7</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>排序</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> 表名 distribute <span class="keyword">by</span> 字段名[,字段名...];</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-分区并排序"><a href="#4-3-分区并排序" class="headerlink" title="4.3    分区并排序"></a>4.3    分区并排序</h3><ul>
+<li>cluster by（字段）除了具有Distribute by的功能外，还会对该字段进行排序</li>
+<li>cluster by &#x3D; distribute by + sort by 只能默认升序，不能使用倒序</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> 表名 sort cluster <span class="keyword">by</span> 字段名[,字段名...];</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> 表名 distribute <span class="keyword">by</span> 字段名[,字段名...] sort <span class="keyword">by</span> 字段名[,字段名...];</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/08/ZVozuJNtE9wXm2a.png" alt="hive几种分区的区别.png"></p>
+<h2 id="5、Hive内置函数"><a href="#5、Hive内置函数" class="headerlink" title="5、Hive内置函数"></a>5、Hive内置函数</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">https:<span class="operator">/</span><span class="operator">/</span>cwiki.apache.org<span class="operator">/</span>confluence<span class="operator">/</span>display<span class="operator">/</span>Hive<span class="operator">/</span>LanguageManual<span class="operator">+</span>UDF</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 1.查看系统自带函数</span></span><br><span class="line"><span class="keyword">show</span> functions;</span><br><span class="line"><span class="comment">-- 2.显示自带的函数的用法</span></span><br><span class="line"><span class="keyword">desc</span> <span class="keyword">function</span> upper;</span><br><span class="line"><span class="comment">-- 3.详细显示自带的函数的用法</span></span><br><span class="line"><span class="keyword">desc</span> <span class="keyword">function</span> extended upper;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/08/gWa3pOnDHT89EtI.png" alt="内置函数的分类.png"></p>
+<h3 id="5-1-内置函数分类"><a href="#5-1-内置函数分类" class="headerlink" title="5.1    内置函数分类"></a>5.1    内置函数分类</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">关系操作符：包括 <span class="operator">=</span> 、 <span class="operator">&lt;&gt;</span> 、 <span class="operator">&lt;=</span> 、<span class="operator">&gt;=</span>等</span><br><span class="line"></span><br><span class="line">算数操作符：包括 <span class="operator">+</span> 、 <span class="operator">-</span> 、 <span class="operator">*</span>、／等</span><br><span class="line"></span><br><span class="line">逻辑操作符：包括<span class="keyword">AND</span> 、 <span class="operator">&amp;&amp;</span> 、 <span class="keyword">OR</span> 、 <span class="operator">||</span> 等</span><br><span class="line"></span><br><span class="line">复杂类型构造函数：包括map、struct、create_union等</span><br><span class="line"></span><br><span class="line">复杂类型操作符：包括A[n]、Map[key]、S.x</span><br><span class="line"></span><br><span class="line">数学操作符：包括<span class="built_in">ln</span>(<span class="keyword">double</span> a)、<span class="built_in">sqrt</span>(<span class="keyword">double</span> a)等</span><br><span class="line"></span><br><span class="line">集合操作符：包括size(<span class="keyword">Array</span>)、sort_array(<span class="keyword">Array</span>)等</span><br><span class="line"></span><br><span class="line">类型转换函数： <span class="type">binary</span>(string<span class="operator">|</span><span class="type">binary</span>)、<span class="built_in">cast</span>(expr <span class="keyword">as</span> )</span><br><span class="line"></span><br><span class="line">日期函数：包括from_unixtime(<span class="type">bigint</span> unixtime[, string format])、unix_timestamp()等</span><br><span class="line"></span><br><span class="line">条件函数：包括if(<span class="type">boolean</span> testCondition, T valueTrue, T valueFalseOrNull)等</span><br><span class="line"></span><br><span class="line">字符串函数：包括acat(string<span class="operator">|</span><span class="type">binary</span> A, string<span class="operator">|</span><span class="type">binary</span> B…)等</span><br><span class="line"></span><br><span class="line">其他：xpath、get_json_objectscii(string str)、con</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-UDTF-hive中特殊的一个功能（进一出多）"><a href="#5-2-UDTF-hive中特殊的一个功能（进一出多）" class="headerlink" title="5.2    UDTF hive中特殊的一个功能（进一出多）"></a>5.2    UDTF hive中特殊的一个功能（进一出多）</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- UDF 进一出一</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- UDAF 进多出一</span></span><br><span class="line"><span class="comment">-- collect_set()和collect_list()都是对多列转成一行，区别就是list里面可重复而set里面是去重的</span></span><br><span class="line"><span class="comment">-- concat_ws(&#x27;:&#x27;,collect_set(type))   &#x27;:&#x27; 表示你合并后用什么分隔，collect_set(stage)表示要合并表中的那一列数据</span></span><br><span class="line"><span class="keyword">select</span> 字段名,concat_ws(<span class="string">&#x27;:&#x27;</span>,collect_set(列名)) <span class="keyword">as</span> 别名 <span class="keyword">from</span> 表名 <span class="keyword">group</span> <span class="keyword">by</span> id;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- UDTF 进一出多</span></span><br><span class="line"><span class="comment">-- explode  可以将一组数组的数据变成一列表</span></span><br><span class="line"><span class="keyword">select</span>  explode(split(列名,&quot;数据的分隔符&quot;)) <span class="keyword">from</span> 表名;</span><br><span class="line"><span class="comment">-- lateral view 表生成函数，可以将explode的数据生成一个列表</span></span><br><span class="line"><span class="keyword">select</span> id,name,列名 <span class="keyword">from</span> 表<span class="number">1</span>,<span class="keyword">lateral</span> <span class="keyword">view</span> explode(split(表<span class="number">1.</span>列名,&quot;数据的分隔符&quot;))新列名 <span class="keyword">as</span> 别列名;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建数据库表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_movie1(</span><br><span class="line">id <span class="type">int</span>,</span><br><span class="line">name string,</span><br><span class="line">types string</span><br><span class="line">)</span><br><span class="line"><span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span></span><br><span class="line">lines terminated <span class="keyword">by</span> <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 电影数据  movie1.txt</span></span><br><span class="line"><span class="comment">-- 加载数据到数据库 load data inpath &#x27;/shujia/movie1.txt&#x27; into table t_movie1;</span></span><br><span class="line"><span class="number">1</span>,这个杀手不太冷,剧情<span class="operator">-</span>动作<span class="operator">-</span>犯罪</span><br><span class="line"><span class="number">2</span>,七武士,动作<span class="operator">-</span>冒险<span class="operator">-</span>剧情</span><br><span class="line"><span class="number">3</span>,勇敢的心,动作<span class="operator">-</span>传记<span class="operator">-</span>剧情<span class="operator">-</span>历史<span class="operator">-</span>战争</span><br><span class="line"><span class="number">4</span>,东邪西毒,剧情<span class="operator">-</span>动作<span class="operator">-</span>爱情<span class="operator">-</span>武侠<span class="operator">-</span>古装</span><br><span class="line"><span class="number">5</span>,霍比特人,动作<span class="operator">-</span>奇幻<span class="operator">-</span>冒险</span><br><span class="line"></span><br><span class="line"><span class="comment">-- explode  可以将一组数组的数据变成一列表</span></span><br><span class="line"><span class="keyword">select</span>  explode(split(types,&quot;-&quot;)) <span class="keyword">from</span> t_movie1;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- lateral view 表生成函数，可以将explode的数据生成一个列表</span></span><br><span class="line"><span class="keyword">select</span> id,name,type <span class="keyword">from</span> t_movie1 <span class="keyword">lateral</span> <span class="keyword">view</span> explode(split(types,&quot;-&quot;)) typetable <span class="keyword">as</span> type;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建数据库表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_movie2(</span><br><span class="line">id <span class="type">int</span>,</span><br><span class="line">name string,</span><br><span class="line">type string</span><br><span class="line">)</span><br><span class="line"><span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span></span><br><span class="line">lines terminated <span class="keyword">by</span> <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 电影数据 movie2.txt</span></span><br><span class="line"><span class="comment">-- 加载数据到数据库 load data inpath &#x27;/shujia/movie2.txt&#x27; into table t_movie2;</span></span><br><span class="line"><span class="number">1</span>,这个杀手不太冷,剧情</span><br><span class="line"><span class="number">1</span>,这个杀手不太冷,动作</span><br><span class="line"><span class="number">1</span>,这个杀手不太冷,犯罪</span><br><span class="line"><span class="number">2</span>,七武士,动作</span><br><span class="line"><span class="number">2</span>,七武士,冒险</span><br><span class="line"><span class="number">2</span>,七武士,剧情</span><br><span class="line"><span class="number">3</span>,勇敢的心,动作</span><br><span class="line"><span class="number">3</span>,勇敢的心,传记</span><br><span class="line"><span class="number">3</span>,勇敢的心,剧情</span><br><span class="line"><span class="number">3</span>,勇敢的心,历史</span><br><span class="line"><span class="number">3</span>,勇敢的心,战争</span><br><span class="line"><span class="number">4</span>,东邪西毒,剧情</span><br><span class="line"><span class="number">4</span>,东邪西毒,动作</span><br><span class="line"><span class="number">4</span>,东邪西毒,爱情</span><br><span class="line"><span class="number">4</span>,东邪西毒,武侠</span><br><span class="line"><span class="number">4</span>,东邪西毒,古装</span><br><span class="line"><span class="number">5</span>,霍比特人,动作</span><br><span class="line"><span class="number">5</span>,霍比特人,奇幻</span><br><span class="line"><span class="number">5</span>,霍比特人,冒险</span><br><span class="line"></span><br><span class="line"><span class="comment">-- collect_set()和collect_list()都是对列转成行，区别就是list里面可重复而set里面是去重的</span></span><br><span class="line"><span class="comment">-- concat_ws(&#x27;:&#x27;,collect_set(type))   &#x27;:&#x27; 表示你合并后用什么分隔，collect_set(stage)表示要合并表中的那一列数据</span></span><br><span class="line"><span class="keyword">select</span> id,concat_ws(<span class="string">&#x27;:&#x27;</span>,collect_set(type)) <span class="keyword">as</span> types <span class="keyword">from</span> t_movie2 <span class="keyword">group</span> <span class="keyword">by</span> id;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-WordCount案例"><a href="#5-3-WordCount案例" class="headerlink" title="5.3    WordCount案例"></a>5.3    WordCount案例</h3><blockquote>
+<p>数据准备</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hello,world</span><br><span class="line">hello,bigdata</span><br><span class="line">like,life</span><br><span class="line">bigdata,good</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>建表</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> wc</span><br><span class="line">(</span><br><span class="line">line string</span><br><span class="line">)</span><br><span class="line"><span class="type">row</span> format delimited fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>导入数据</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">load data <span class="keyword">local</span> inpath <span class="string">&#x27;/usr/local/soft/data/wc1.txt&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> wc;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>步骤1：先对一行数据进行切分</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> split(line,<span class="string">&#x27;,&#x27;</span>) <span class="keyword">from</span> wc;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>步骤2：将行转列</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> explode(split(line,<span class="string">&#x27;,&#x27;</span>)) <span class="keyword">from</span> wc; </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>步骤3：将相同的进行分组统计</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> w.word,<span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> (<span class="keyword">select</span> explode(split(line,<span class="string">&#x27;,&#x27;</span>)) <span class="keyword">as</span> word <span class="keyword">from</span> wc) w <span class="keyword">group</span> <span class="keyword">by</span> w.word;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">秋水一色</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/02/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-2/">http://example.com/2022/06/02/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Notes</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hive/">Hive</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/07/%E8%BF%9E%E7%BB%AD%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">连续登陆问题</div></div></a></div><div class="next-post pull-right"><a href="/2022/05/31/Hive%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%AE%89%E8%A3%85/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hive概述及安装</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/06/07/Hive%E4%BC%98%E5%8C%96/" title="Hive优化"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-07</div><div class="title">Hive优化</div></div></a></div><div><a href="/2022/05/31/Hive%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%AE%89%E8%A3%85/" title="Hive概述及安装"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-31</div><div class="title">Hive概述及安装</div></div></a></div><div><a href="/2022/05/31/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-1/" title="Hive的基本操作"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-31</div><div class="title">Hive的基本操作</div></div></a></div><div><a href="/2022/06/07/%E8%BF%9E%E7%BB%AD%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/" title="连续登陆问题"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-07</div><div class="title">连续登陆问题</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/mD5ZV7wdUBGl62S.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">秋水一色</div><div class="author-info__description">春风得意马蹄疾,一日看尽长安花</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hzh4015"><i class="fab fa-github"></i><span>一起学习，加油！</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/hzh4015" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:hzh4015@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2597845702&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这是我的第一个笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81Hive%E5%88%86%E5%8C%BA"><span class="toc-number">1.</span> <span class="toc-text">1、Hive分区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E9%9D%99%E6%80%81%E5%88%86%E5%8C%BA%EF%BC%88SP%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">1.2    静态分区（SP）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%8A%A8%E6%80%81%E5%88%86%E5%8C%BA%EF%BC%88DP%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">1.3    动态分区（DP）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81Hive%E5%88%86%E6%A1%B6"><span class="toc-number">2.</span> <span class="toc-text">2、Hive分桶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="toc-number">2.1.</span> <span class="toc-text">2.1    业务场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%95%B0%E6%8D%AE%E5%88%86%E6%A1%B6%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">2.2    数据分桶原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%95%B0%E6%8D%AE%E5%88%86%E6%A1%B6%E4%BC%98%E5%8A%BF"><span class="toc-number">2.3.</span> <span class="toc-text">2.3    数据分桶优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%88%86%E6%A1%B6%E5%AE%9E%E6%88%98"><span class="toc-number">2.4.</span> <span class="toc-text">2.4    分桶实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81Hive-JDBC"><span class="toc-number">3.</span> <span class="toc-text">3、Hive JDBC</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8hiveserver2"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">启动hiveserver2</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B0%E5%BB%BAmaven%E9%A1%B9%E7%9B%AE%E5%B9%B6%E6%B7%BB%E5%8A%A0%E4%B8%A4%E4%B8%AA%E4%BE%9D%E8%B5%96"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">新建maven项目并添加两个依赖</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%96%E5%86%99JDBC%E4%BB%A3%E7%A0%81"><span class="toc-number">3.0.0.3.</span> <span class="toc-text">编写JDBC代码</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81Hive%E6%9F%A5%E8%AF%A2%E8%AF%AD%E6%B3%95-DQL"><span class="toc-number">4.</span> <span class="toc-text">4、Hive查询语法(DQL)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%85%A8%E5%B1%80%E6%8E%92%E5%BA%8F"><span class="toc-number">4.1.</span> <span class="toc-text">4.1    全局排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%B1%80%E9%83%A8%E6%8E%92%E5%BA%8F"><span class="toc-number">4.2.</span> <span class="toc-text">4.2    局部排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%88%86%E5%8C%BA%E6%8E%92%E5%BA%8F"><span class="toc-number">4.3.</span> <span class="toc-text">4.3    分区排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%88%86%E5%8C%BA%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-number">4.4.</span> <span class="toc-text">4.3    分区并排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81Hive%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">5、Hive内置函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E5%88%86%E7%B1%BB"><span class="toc-number">5.1.</span> <span class="toc-text">5.1    内置函数分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-UDTF-hive%E4%B8%AD%E7%89%B9%E6%AE%8A%E7%9A%84%E4%B8%80%E4%B8%AA%E5%8A%9F%E8%83%BD%EF%BC%88%E8%BF%9B%E4%B8%80%E5%87%BA%E5%A4%9A%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">5.2    UDTF hive中特殊的一个功能（进一出多）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-WordCount%E6%A1%88%E4%BE%8B"><span class="toc-number">5.3.</span> <span class="toc-text">5.3    WordCount案例</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/07/Hive%E4%BC%98%E5%8C%96/" title="Hive优化"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hive优化"/></a><div class="content"><a class="title" href="/2022/06/07/Hive%E4%BC%98%E5%8C%96/" title="Hive优化">Hive优化</a><time datetime="2022-06-06T16:00:00.000Z" title="发表于 2022-06-07 00:00:00">2022-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/07/%E8%BF%9E%E7%BB%AD%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/" title="连续登陆问题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="连续登陆问题"/></a><div class="content"><a class="title" href="/2022/06/07/%E8%BF%9E%E7%BB%AD%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/" title="连续登陆问题">连续登陆问题</a><time datetime="2022-06-06T16:00:00.000Z" title="发表于 2022-06-07 00:00:00">2022-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/02/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-2/" title="Hive的基本操作-2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hive的基本操作-2"/></a><div class="content"><a class="title" href="/2022/06/02/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-2/" title="Hive的基本操作-2">Hive的基本操作-2</a><time datetime="2022-06-01T16:00:00.000Z" title="发表于 2022-06-02 00:00:00">2022-06-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/31/Hive%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%AE%89%E8%A3%85/" title="Hive概述及安装"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hive概述及安装"/></a><div class="content"><a class="title" href="/2022/05/31/Hive%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%AE%89%E8%A3%85/" title="Hive概述及安装">Hive概述及安装</a><time datetime="2022-05-30T16:00:00.000Z" title="发表于 2022-05-31 00:00:00">2022-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/31/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-1/" title="Hive的基本操作"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hive的基本操作"/></a><div class="content"><a class="title" href="/2022/05/31/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-1/" title="Hive的基本操作">Hive的基本操作</a><time datetime="2022-05-30T16:00:00.000Z" title="发表于 2022-05-31 00:00:00">2022-05-31</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 秋水一色</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
