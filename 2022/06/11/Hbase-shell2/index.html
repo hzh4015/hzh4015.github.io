@@ -1,0 +1,436 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Hbase-shell2 | Notes</title><meta name="keywords" content="hbase shell 大数据"><meta name="author" content="秋水一色"><meta name="copyright" content="秋水一色"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对学习hbase shell的一些知识笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hbase-shell2">
+<meta property="og:url" content="http://example.com/2022/06/11/Hbase-shell2/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="对学习hbase shell的一些知识笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png">
+<meta property="article:published_time" content="2022-06-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-12T13:44:14.075Z">
+<meta property="article:author" content="秋水一色">
+<meta property="article:tag" content="Hbase">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/11/Hbase-shell2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hbase-shell2',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-12 21:44:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/mD5ZV7wdUBGl62S.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Notes</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hbase-shell2</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-10T16:00:00.000Z" title="发表于 2022-06-11 00:00:00">2022-06-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-12T13:44:14.075Z" title="更新于 2022-06-12 21:44:14">2022-06-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hbase-shell2"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="一、Hbase-shell"><a href="#一、Hbase-shell" class="headerlink" title="一、Hbase shell"></a>一、Hbase shell</h2><h3 id="1、Region信息观察"><a href="#1、Region信息观察" class="headerlink" title="1、Region信息观察"></a>1、Region信息观察</h3><h4 id="创建表指定命名空间"><a href="#创建表指定命名空间" class="headerlink" title="创建表指定命名空间"></a>创建表指定命名空间</h4><blockquote>
+<p>在创建表的时候可以选择创建到bigdata17这个namespace中，如何实现呢？<br>使用这种格式即可：‘命名空间名称:表名’<br>针对default这个命名空间，在使用的时候可以省略不写</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">create &#x27;bigdata17:t1&#x27;,&#x27;info&#x27;,&#x27;level&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/Dow6xBpHlRzQ8PG.png" alt="image-20220612212944281"></p>
+<blockquote>
+<p>此时使用list查看所有的表</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/CxKkf4Wui2Smh1A.png" alt="image-20220612212956679"></p>
+<blockquote>
+<p>如果只想查看bigdata17这个命名空间中的表，如何实现呢？<br>可以使用命令list_namespace_tables</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">list_namespace_tables &#x27;n1&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/hnEFiVldA1Ksr6W.png" alt="image-20220612213004703"></p>
+<blockquote>
+<p>查看region中的某列簇数据</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hbase hfile -p -f /hbase/data/default/tbl_user/92994712513a45baaa12b72117dda5e5/info/d84e2013791845968917d876e2b438a5</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-1-查看表的所有region"><a href="#1-1-查看表的所有region" class="headerlink" title="1.1    查看表的所有region"></a>1.1    查看表的所有region</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">list_regions &#x27;表名&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/bY5Oj38yBf4mnwL.png" alt="image-20220612213103879"></p>
+<h4 id="1-2-强制将表切分出来一个region"><a href="#1-2-强制将表切分出来一个region" class="headerlink" title="1.2    强制将表切分出来一个region"></a>1.2    强制将表切分出来一个region</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">split &#x27;表名&#x27;,&#x27;行键&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/yaqm2QU1oNlZRLE.png" alt="image-20220612213116364"></p>
+<blockquote>
+<p>但是在页面上可以看到三个：过一会会自动的把原来的删除</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="D:/bigdata%25E5%259F%25B9%25E8%25AE%25AD/Hbase/day02/Hbase%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2588%25E4%25BA%258C%25EF%25BC%2589.assets/image-20220609215721140.png" alt="image-20220609215721140"></p>
+<h4 id="1-2-查看某一行在哪个region中"><a href="#1-2-查看某一行在哪个region中" class="headerlink" title="1.2    查看某一行在哪个region中"></a>1.2    查看某一行在哪个region中</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">locate_region &#x27;表名&#x27;,&#x27;行键&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/GAjNmPi9SRoqJWU.png" alt="image-20220612213129838"></p>
+<blockquote>
+<p>可以hbase hfile -p -f xxxx 查看一下</p>
+</blockquote>
+<h3 id="2、预分region解决热点问题"><a href="#2、预分region解决热点问题" class="headerlink" title="2、预分region解决热点问题"></a>2、预分region解决热点问题</h3><blockquote>
+<p>row设计的一个关键点是查询维度</p>
+<p>(在建表的时候根据具体的查询业务  设计rowkey   预拆分)</p>
+<p>在默认的拆分策略中 ,region的大小达到一定的阈值以后才会进行拆分,并且拆分的region在同一个regionserver中 ,只有达到负载均衡的时机时才会进行region重分配!并且开始如果有大量的数据进行插入操作,那么并发就会集中在单个RS中, 形成热点问题,所以如果有并发插入的时候尽量避免热点问题 ,应当预划分 Region的rowkeyRange范围 ,在建表的时候就指定预region范围 </p>
+</blockquote>
+<blockquote>
+<p>查看命令使用(指定4个切割点，就会有5个region)</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">help &#x27;create&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/onVxkTuJROsG2hE.png" alt="image-20220612213148593"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">create &#x27;tb_split&#x27;,&#x27;cf&#x27;,SPLITS =&gt; [&#x27;e&#x27;,&#x27;h&#x27;,&#x27;l&#x27;,&#x27;r&#x27;]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">list_regions &#x27;tb_split&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/sS8UjNJrlLAb5TQ.png" alt="image-20220612213201806"></p>
+<blockquote>
+<p>添加数据试试</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">put &#x27;tb_split&#x27;,&#x27;c001&#x27;,&#x27;cf:name&#x27;,&#x27;first&#x27;</span><br><span class="line">put &#x27;tb_split&#x27;,&#x27;f001&#x27;,&#x27;cf:name&#x27;,&#x27;second&#x27;</span><br><span class="line">put &#x27;tb_split&#x27;,&#x27;z001&#x27;,&#x27;cf:name&#x27;,&#x27;last&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>hbase hfile -p –f xxxx 查看数据</p>
+</blockquote>
+<blockquote>
+<p>如果没有数据，因为数据还在内存中，需要手动刷新内存到HDFS中，以HFile的形式存储</p>
+</blockquote>
+<h3 id="3、总结（写一个文档总结回顾）"><a href="#3、总结（写一个文档总结回顾）" class="headerlink" title="3、总结（写一个文档总结回顾）"></a>3、总结（写一个文档总结回顾）</h3><h3 id="4、日志查看"><a href="#4、日志查看" class="headerlink" title="4、日志查看"></a>4、日志查看</h3><blockquote>
+<p>演示不启动hdfs 就启动hbase</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">日志目录：</span><br><span class="line">/usr/local/soft/hbase-1.7.1/logs</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/KIdYakN6uzUgGTb.png" alt="image-20220612213213973"></p>
+<blockquote>
+<p>start-all.sh发现HMaster没启动，hbase shell客户端也可以正常访问</p>
+<p>再启动hbase就好了</p>
+</blockquote>
+<h3 id="5、scan进阶使用"><a href="#5、scan进阶使用" class="headerlink" title="5、scan进阶使用"></a>5、scan进阶使用</h3><blockquote>
+<p>查看所有的命名空间</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">list_namespace</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看某个命名空间下的所有表</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">list_namespace_tables &#x27;default&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>修改命名空间,设置一个属性</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alter_namespace &#x27;bigdata17&#x27;,&#123;METHOD=&gt;&#x27;set&#x27;,&#x27;author&#x27;=&gt;&#x27;wyh&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看命名空间属性</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">describe_namespace &#x27;bigdata17&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>删除一个属性</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alter_namespace &#x27;bigdata17&#x27;,&#123;METHOD=&gt;&#x27;unset&#x27;, NAME=&gt;&#x27;author&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>删除一个命名空间</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">drop_namespace &#x27;bigdata17&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>创建一张表</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">create <span class="string">&#x27;teacher&#x27;</span>,<span class="string">&#x27;cf&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>添加数据</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">put &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:tid&#x27;,1</span><br><span class="line">put &#x27;teacher&#x27;,&#x27;tid0002&#x27;,&#x27;cf:tid&#x27;,2</span><br><span class="line">put &#x27;teacher&#x27;,&#x27;tid0003&#x27;,&#x27;cf:tid&#x27;,3</span><br><span class="line">put &#x27;teacher&#x27;,&#x27;tid0004&#x27;,&#x27;cf:tid&#x27;,4</span><br><span class="line">put &#x27;teacher&#x27;,&#x27;tid0005&#x27;,&#x27;cf:tid&#x27;,5</span><br><span class="line">put &#x27;teacher&#x27;,&#x27;tid0006&#x27;,&#x27;cf:tid&#x27;,6</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>显示三行数据</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scan &#x27;teacher&#x27;,&#123;LIMIT=&gt;3&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">put &#x27;teacher&#x27;,&#x27;tid00001&#x27;,&#x27;cf:name&#x27;,&#x27;wyh&#x27;</span><br><span class="line">scan &#x27;teacher&#x27;,&#123;LIMIT=&gt;3&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/lE4SaAX3FCNtGOj.png" alt="image-20220612213223835"></p>
+<blockquote>
+<p>从后查三行</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scan &#x27;teacher&#x27;,&#123;LIMIT=&gt;3,REVERSED=&gt;true&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/ky7KZhD36bYxpCI.png" alt="image-20220612213231718"></p>
+<blockquote>
+<p>查看包含指定列的行</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scan &#x27;teacher&#x27;,&#123;LIMIT=&gt;3,COLUMNS=&gt;[&#x27;cf:name&#x27;]&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>简化写法：</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scan &#x27;teacher&#x27;,LIMIT=&gt;3</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在已有的值后面追加值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">append &#x27;teacher&#x27;,&#x27;tid0006&#x27;,&#x27;cf:name&#x27;,&#x27;123&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、get进阶使用"><a href="#6、get进阶使用" class="headerlink" title="6、get进阶使用"></a>6、get进阶使用</h3><blockquote>
+<p>简单使用，获取某一行数据</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">get &#x27;teacher&#x27;,&#x27;tid0001&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取某一行的某个列簇</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">get &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取某一行的某一列（属性 ）</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">get &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:name&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以新增一个列簇数据测试</p>
+</blockquote>
+<blockquote>
+<p><strong>查看历史版本</strong></p>
+<p>1、修改表可以存储多个版本</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alter &#x27;teacher&#x27;,NAME=&gt;&#x27;cf&#x27;,VERSIONS=&gt;3</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>2、put四次相同rowkey和列的数据</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">put &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:name&#x27;,&#x27;xiaohu1&#x27;</span><br><span class="line">put &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:name&#x27;,&#x27;xiaohu2&#x27;</span><br><span class="line">put &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:name&#x27;,&#x27;xiaohu3&#x27;</span><br><span class="line">put &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:name&#x27;,&#x27;xiaohu4&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>3、查看历史数据，默认是最新的</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">get &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#123;COLUMN=&gt;&#x27;cf:name&#x27;,VERSIONS=&gt;2&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>修改列簇的过期时间 TTL单位是秒，这个时间是与插入的时间比较，而不是现在开始60s</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alter &#x27;teacher&#x27;,&#123;NAME=&gt;&#x27;cf2&#x27;,TTL=&gt;&#x27;60&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7、插入时间指定时间戳"><a href="#7、插入时间指定时间戳" class="headerlink" title="7、插入时间指定时间戳"></a>7、插入时间指定时间戳</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">put &#x27;teacher&#x27;,&#x27;tid0007&#x27;,&#x27;cf2:job&#x27;,&#x27;bigdata17&#x27;,1654845442790</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>画图理解这个操作在实际生产的作用</p>
+</blockquote>
+<h3 id="8、delete-只能删除一个单元格，不能删除列簇"><a href="#8、delete-只能删除一个单元格，不能删除列簇" class="headerlink" title="8、delete(只能删除一个单元格，不能删除列簇)"></a>8、delete(只能删除一个单元格，不能删除列簇)</h3><blockquote>
+<p>删除某一列</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">delete &#x27;teacher&#x27;,&#x27;tid0004&#x27;,&#x27;cf:tid&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="9、deleteall-删除不了某个列簇，但是可以删除多个单元格"><a href="#9、deleteall-删除不了某个列簇，但是可以删除多个单元格" class="headerlink" title="9、deleteall(删除不了某个列簇，但是可以删除多个单元格)"></a>9、deleteall(删除不了某个列簇，但是可以删除多个单元格)</h3><blockquote>
+<p>删除一行，如果不指定类簇，删除的是一行中的所有列簇</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deleteall &#x27;teacher&#x27;,&#x27;tid0006&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>删除单元格</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deleteall &#x27;teacher&#x27;,&#x27;tid0006&#x27;,&#x27;cf:name&#x27;,&#x27;cf2:job&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="10、incr和counter"><a href="#10、incr和counter" class="headerlink" title="10、incr和counter"></a>10、incr和counter</h3><blockquote>
+<p>统计表有多少行(<strong>统计的是行键的个数</strong>)</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">count &#x27;teacher&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>新建一个自增的一列</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">incr &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:cnt&#x27;,1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>每操作一次，自增1</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">incr &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:cnt&#x27;,1</span><br><span class="line">incr &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:cnt&#x27;,10</span><br><span class="line">incr &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:cnt&#x27;,100</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/o4DQfV6mOd5gGBY.png" alt="image-20220612213526090"></p>
+<blockquote>
+<p>配合counter取出数据,只能去incr字段</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">get_counter &#x27;teacher&#x27;,&#x27;tid0001&#x27;,&#x27;cf:cnt&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="11、获取region的分割点，清除数据，快照"><a href="#11、获取region的分割点，清除数据，快照" class="headerlink" title="11、获取region的分割点，清除数据，快照"></a>11、获取region的分割点，清除数据，快照</h3><blockquote>
+<p>获取region的分割点</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">get_splits &#x27;tb_split&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>清除表数据</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">truncate &#x27;teacher&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>拍摄快照</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">snapshot &#x27;tb_split&#x27;,&#x27;tb_split_20220610&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>列出所有快照</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">list_table_snapshots &#x27;tb_split&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>再添加一些数据</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">put &#x27;tb_split&#x27;,&#x27;a001&#x27;,&#x27;cf:name&#x27;,&#x27;wyh&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>恢复快照(先禁用)</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">disable &#x27;tb_split&#x27;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">restore_snapshot &#x27;tb_split_20220610&#x27;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">enable &#x27;tb_split&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="12-修饰词"><a href="#12-修饰词" class="headerlink" title="12    修饰词"></a>12    修饰词</h3><h5 id="1、修饰词"><a href="#1、修饰词" class="headerlink" title="1、修饰词"></a>1、修饰词</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 语法</span><br><span class="line">scan <span class="string">&#x27;表名&#x27;</span>, &#123;COLUMNS <span class="operator">=</span><span class="operator">&gt;</span> [ <span class="string">&#x27;列族名1:列名1&#x27;</span>, <span class="string">&#x27;列族名1:列名2&#x27;</span>, ...]&#125;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>, &#123;COLUMNS <span class="operator">=</span><span class="operator">&gt;</span> [ <span class="string">&#x27;info:id&#x27;</span>, <span class="string">&#x27;info:age&#x27;</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2、TIMESTAMP-指定时间戳"><a href="#2、TIMESTAMP-指定时间戳" class="headerlink" title="2、TIMESTAMP 指定时间戳"></a>2、TIMESTAMP 指定时间戳</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 语法</span><br><span class="line">scan <span class="string">&#x27;表名&#x27;</span>,&#123;TIMERANGE<span class="operator">=</span><span class="operator">&gt;</span>[timestamp1, timestamp2]&#125;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>,&#123;TIMERANGE<span class="operator">=</span><span class="operator">&gt;</span>[<span class="number">1551938004321</span>, <span class="number">1551938036450</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3、VERSIONS"><a href="#3、VERSIONS" class="headerlink" title="3、VERSIONS"></a>3、VERSIONS</h5><blockquote>
+<p>默认情况下一个列只能存储一个数据，后面如果修改数据就会将原来的覆盖掉，可以通过指定VERSIONS时HBase一列能存储多个值。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="string">&#x27;tbl_test&#x27;</span>, <span class="string">&#x27;columnFamily1&#x27;</span></span><br><span class="line"><span class="keyword">describe</span> <span class="string">&#x27;tbl_test&#x27;</span></span><br><span class="line"></span><br><span class="line"># 修改列族版本号</span><br><span class="line"><span class="keyword">alter</span> <span class="string">&#x27;tbl_test&#x27;</span>, &#123; NAME<span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;columnFamily1&#x27;</span>, VERSIONS<span class="operator">=</span><span class="operator">&gt;</span><span class="number">3</span> &#125;</span><br><span class="line"></span><br><span class="line">put <span class="string">&#x27;tbl_test&#x27;</span>, <span class="string">&#x27;rowKey1&#x27;</span>, <span class="string">&#x27;columnFamily1:column1&#x27;</span>, <span class="string">&#x27;value1&#x27;</span></span><br><span class="line">put <span class="string">&#x27;tbl_test&#x27;</span>, <span class="string">&#x27;rowKey1&#x27;</span>, <span class="string">&#x27;columnFamily1:column1&#x27;</span>, <span class="string">&#x27;value2&#x27;</span></span><br><span class="line">put <span class="string">&#x27;tbl_test&#x27;</span>, <span class="string">&#x27;rowKey1&#x27;</span>, <span class="string">&#x27;columnFamily1:column1&#x27;</span>, <span class="string">&#x27;value3&#x27;</span></span><br><span class="line"></span><br><span class="line"># 默认返回最新的一条数据</span><br><span class="line"><span class="keyword">get</span> <span class="string">&#x27;tbl_test&#x27;</span>,<span class="string">&#x27;rowKey1&#x27;</span>,<span class="string">&#x27;columnFamily1:column1&#x27;</span></span><br><span class="line"></span><br><span class="line"># 返回<span class="number">3</span>个</span><br><span class="line"><span class="keyword">get</span> <span class="string">&#x27;tbl_test&#x27;</span>,<span class="string">&#x27;rowKey1&#x27;</span>,&#123;<span class="keyword">COLUMN</span><span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;columnFamily1:column1&#x27;</span>, VERSIONS<span class="operator">=</span><span class="operator">&gt;</span><span class="number">3</span>&#125;</span><br><span class="line"># 返回<span class="number">2</span>个</span><br><span class="line"><span class="keyword">get</span> <span class="string">&#x27;tbl_test&#x27;</span>,<span class="string">&#x27;rowKey1&#x27;</span>,&#123;<span class="keyword">COLUMN</span><span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;columnFamily1:column1&#x27;</span>, VERSIONS<span class="operator">=</span><span class="operator">&gt;</span><span class="number">2</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4、STARTROW"><a href="#4、STARTROW" class="headerlink" title="4、STARTROW"></a>4、STARTROW</h5><blockquote>
+<p>ROWKEY起始行。会先根据这个key定位到region，再向后扫描</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 语法</span><br><span class="line">scan <span class="string">&#x27;表名&#x27;</span>, &#123; STARTROW <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;行键名&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>, &#123; STARTROW <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;vbirdbest&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="5、STOPROW-：截止到STOPROW行，STOPROW行之前的数据，不包括STOPROW这行数据"><a href="#5、STOPROW-：截止到STOPROW行，STOPROW行之前的数据，不包括STOPROW这行数据" class="headerlink" title="5、STOPROW ：截止到STOPROW行，STOPROW行之前的数据，不包括STOPROW这行数据"></a>5、STOPROW ：截止到STOPROW行，STOPROW行之前的数据，不包括STOPROW这行数据</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 语法</span><br><span class="line">scan <span class="string">&#x27;表名&#x27;</span>, &#123; STOPROW <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;行键名&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>, &#123; STOPROW <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;xiaoming&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="6、LIMIT-返回的行数"><a href="#6、LIMIT-返回的行数" class="headerlink" title="6、LIMIT 返回的行数"></a>6、LIMIT 返回的行数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 语法</span><br><span class="line">scan <span class="string">&#x27;表名&#x27;</span>, &#123; LIMIT <span class="operator">=</span><span class="operator">&gt;</span> 行数&#125;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>, &#123; LIMIT <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">2</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="13-FILTER条件过滤器"><a href="#13-FILTER条件过滤器" class="headerlink" title="13    FILTER条件过滤器"></a>13    FILTER条件过滤器</h3><blockquote>
+<p>过滤器之间可以使用AND、OR连接多个过滤器。</p>
+</blockquote>
+<h5 id="1、ValueFilter-值过滤器"><a href="#1、ValueFilter-值过滤器" class="headerlink" title="1、ValueFilter 值过滤器"></a>1、ValueFilter 值过滤器</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 语法：<span class="type">binary</span> 等于某个值</span><br><span class="line">scan <span class="string">&#x27;&#x27;</span>, <span class="keyword">FILTER</span><span class="operator">=</span><span class="operator">&gt;</span>&quot;ValueFilter(=,&#x27;binary:&#x27;)&quot;</span><br><span class="line"># 语法 substring:包含某个值</span><br><span class="line">scan <span class="string">&#x27;表名&#x27;</span>, <span class="keyword">FILTER</span><span class="operator">=</span><span class="operator">&gt;</span>&quot;ValueFilter(=,&#x27;substring:列值&#x27;)&quot;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>, <span class="keyword">FILTER</span><span class="operator">=</span><span class="operator">&gt;</span>&quot;ValueFilter(=, &#x27;binary:26&#x27;)&quot;</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>, <span class="keyword">FILTER</span><span class="operator">=</span><span class="operator">&gt;</span>&quot;ValueFilter(=, &#x27;substring:6&#x27;)&quot;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2、ColumnPrefixFilter-列名前缀过滤器"><a href="#2、ColumnPrefixFilter-列名前缀过滤器" class="headerlink" title="2、ColumnPrefixFilter 列名前缀过滤器"></a>2、ColumnPrefixFilter 列名前缀过滤器</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 语法 substring:包含某个值</span><br><span class="line">scan <span class="string">&#x27;表名&#x27;</span>, <span class="keyword">FILTER</span><span class="operator">=</span><span class="operator">&gt;</span>&quot;ColumnPrefixFilter(&#x27;列名前缀&#x27;)&quot;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>, <span class="keyword">FILTER</span><span class="operator">=</span><span class="operator">&gt;</span>&quot;ColumnPrefixFilter(&#x27;birth&#x27;)&quot;</span><br><span class="line"># 通过括号、<span class="keyword">AND</span>和<span class="keyword">OR</span>的条件组合多个过滤器</span><br><span class="line">scan <span class="string">&#x27;tbl_user&#x27;</span>, <span class="keyword">FILTER</span><span class="operator">=</span><span class="operator">&gt;</span>&quot;ColumnPrefixFilter(&#x27;birth&#x27;) AND ValueFilter(=,&#x27;substring:26&#x27;)&quot;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3、rowKey字典排序"><a href="#3、rowKey字典排序" class="headerlink" title="3、rowKey字典排序"></a>3、rowKey字典排序</h5><blockquote>
+<p>Table中的所有行都是按照row key的字典排序的</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/12/lHbNsQYjU8TCnMA.png" alt="image-20220612213543115"></p>
+<h2 id="二、JAVA-API"><a href="#二、JAVA-API" class="headerlink" title="二、JAVA API"></a>二、JAVA API</h2><blockquote>
+<p>pom文件</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hbase<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hbase-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hadoop-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hadoop-common<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">秋水一色</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/11/Hbase-shell2/">http://example.com/2022/06/11/Hbase-shell2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Notes</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hbase/">Hbase</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/06/11/Hbase%E8%BF%87%E6%BB%A4%E5%99%A8/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hbase过滤器</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/06/10/Hbase-shell1/" title="Hbase shell1"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-10</div><div class="title">Hbase shell1</div></div></a></div><div><a href="/2022/06/08/Hbase%E6%A6%82%E8%BF%B0%E5%8F%8A%E6%90%AD%E5%BB%BA/" title="Hbase概述及搭建"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-08</div><div class="title">Hbase概述及搭建</div></div></a></div><div><a href="/2022/06/11/Hbase%E8%BF%87%E6%BB%A4%E5%99%A8/" title="Hbase过滤器"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-11</div><div class="title">Hbase过滤器</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/mD5ZV7wdUBGl62S.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">秋水一色</div><div class="author-info__description">春风得意马蹄疾,一日看尽长安花</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hzh4015"><i class="fab fa-github"></i><span>一起学习，加油！</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/hzh4015" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:hzh4015@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2597845702&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这是我的第一个笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Hbase-shell"><span class="toc-number">1.</span> <span class="toc-text">一、Hbase shell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81Region%E4%BF%A1%E6%81%AF%E8%A7%82%E5%AF%9F"><span class="toc-number">1.1.</span> <span class="toc-text">1、Region信息观察</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%8C%87%E5%AE%9A%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-number">1.1.1.</span> <span class="toc-text">创建表指定命名空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E6%89%80%E6%9C%89region"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.1    查看表的所有region</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E5%BC%BA%E5%88%B6%E5%B0%86%E8%A1%A8%E5%88%87%E5%88%86%E5%87%BA%E6%9D%A5%E4%B8%80%E4%B8%AAregion"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.2    强制将表切分出来一个region</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%80%E8%A1%8C%E5%9C%A8%E5%93%AA%E4%B8%AAregion%E4%B8%AD"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.2    查看某一行在哪个region中</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E9%A2%84%E5%88%86region%E8%A7%A3%E5%86%B3%E7%83%AD%E7%82%B9%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">2、预分region解决热点问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E6%80%BB%E7%BB%93%EF%BC%88%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%87%E6%A1%A3%E6%80%BB%E7%BB%93%E5%9B%9E%E9%A1%BE%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">3、总结（写一个文档总结回顾）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E6%97%A5%E5%BF%97%E6%9F%A5%E7%9C%8B"><span class="toc-number">1.4.</span> <span class="toc-text">4、日志查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81scan%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text">5、scan进阶使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81get%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8"><span class="toc-number">1.6.</span> <span class="toc-text">6、get进阶使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E6%8F%92%E5%85%A5%E6%97%B6%E9%97%B4%E6%8C%87%E5%AE%9A%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-number">1.7.</span> <span class="toc-text">7、插入时间指定时间戳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81delete-%E5%8F%AA%E8%83%BD%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AA%E5%8D%95%E5%85%83%E6%A0%BC%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%88%A0%E9%99%A4%E5%88%97%E7%B0%87"><span class="toc-number">1.8.</span> <span class="toc-text">8、delete(只能删除一个单元格，不能删除列簇)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81deleteall-%E5%88%A0%E9%99%A4%E4%B8%8D%E4%BA%86%E6%9F%90%E4%B8%AA%E5%88%97%E7%B0%87%EF%BC%8C%E4%BD%86%E6%98%AF%E5%8F%AF%E4%BB%A5%E5%88%A0%E9%99%A4%E5%A4%9A%E4%B8%AA%E5%8D%95%E5%85%83%E6%A0%BC"><span class="toc-number">1.9.</span> <span class="toc-text">9、deleteall(删除不了某个列簇，但是可以删除多个单元格)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81incr%E5%92%8Ccounter"><span class="toc-number">1.10.</span> <span class="toc-text">10、incr和counter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11%E3%80%81%E8%8E%B7%E5%8F%96region%E7%9A%84%E5%88%86%E5%89%B2%E7%82%B9%EF%BC%8C%E6%B8%85%E9%99%A4%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%BF%AB%E7%85%A7"><span class="toc-number">1.11.</span> <span class="toc-text">11、获取region的分割点，清除数据，快照</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E4%BF%AE%E9%A5%B0%E8%AF%8D"><span class="toc-number">1.12.</span> <span class="toc-text">12    修饰词</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1%E3%80%81%E4%BF%AE%E9%A5%B0%E8%AF%8D"><span class="toc-number">1.12.0.1.</span> <span class="toc-text">1、修饰词</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2%E3%80%81TIMESTAMP-%E6%8C%87%E5%AE%9A%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-number">1.12.0.2.</span> <span class="toc-text">2、TIMESTAMP 指定时间戳</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3%E3%80%81VERSIONS"><span class="toc-number">1.12.0.3.</span> <span class="toc-text">3、VERSIONS</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4%E3%80%81STARTROW"><span class="toc-number">1.12.0.4.</span> <span class="toc-text">4、STARTROW</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5%E3%80%81STOPROW-%EF%BC%9A%E6%88%AA%E6%AD%A2%E5%88%B0STOPROW%E8%A1%8C%EF%BC%8CSTOPROW%E8%A1%8C%E4%B9%8B%E5%89%8D%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%8D%E5%8C%85%E6%8B%ACSTOPROW%E8%BF%99%E8%A1%8C%E6%95%B0%E6%8D%AE"><span class="toc-number">1.12.0.5.</span> <span class="toc-text">5、STOPROW ：截止到STOPROW行，STOPROW行之前的数据，不包括STOPROW这行数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6%E3%80%81LIMIT-%E8%BF%94%E5%9B%9E%E7%9A%84%E8%A1%8C%E6%95%B0"><span class="toc-number">1.12.0.6.</span> <span class="toc-text">6、LIMIT 返回的行数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-FILTER%E6%9D%A1%E4%BB%B6%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.13.</span> <span class="toc-text">13    FILTER条件过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1%E3%80%81ValueFilter-%E5%80%BC%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.13.0.1.</span> <span class="toc-text">1、ValueFilter 值过滤器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2%E3%80%81ColumnPrefixFilter-%E5%88%97%E5%90%8D%E5%89%8D%E7%BC%80%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.13.0.2.</span> <span class="toc-text">2、ColumnPrefixFilter 列名前缀过滤器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3%E3%80%81rowKey%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F"><span class="toc-number">1.13.0.3.</span> <span class="toc-text">3、rowKey字典排序</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81JAVA-API"><span class="toc-number">2.</span> <span class="toc-text">二、JAVA API</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/11/Hbase-shell2/" title="Hbase-shell2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hbase-shell2"/></a><div class="content"><a class="title" href="/2022/06/11/Hbase-shell2/" title="Hbase-shell2">Hbase-shell2</a><time datetime="2022-06-10T16:00:00.000Z" title="发表于 2022-06-11 00:00:00">2022-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/11/Hbase%E8%BF%87%E6%BB%A4%E5%99%A8/" title="Hbase过滤器"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hbase过滤器"/></a><div class="content"><a class="title" href="/2022/06/11/Hbase%E8%BF%87%E6%BB%A4%E5%99%A8/" title="Hbase过滤器">Hbase过滤器</a><time datetime="2022-06-10T16:00:00.000Z" title="发表于 2022-06-11 00:00:00">2022-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/10/Hbase-shell1/" title="Hbase shell1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hbase shell1"/></a><div class="content"><a class="title" href="/2022/06/10/Hbase-shell1/" title="Hbase shell1">Hbase shell1</a><time datetime="2022-06-09T16:00:00.000Z" title="发表于 2022-06-10 00:00:00">2022-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/08/Hbase%E6%A6%82%E8%BF%B0%E5%8F%8A%E6%90%AD%E5%BB%BA/" title="Hbase概述及搭建"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hbase概述及搭建"/></a><div class="content"><a class="title" href="/2022/06/08/Hbase%E6%A6%82%E8%BF%B0%E5%8F%8A%E6%90%AD%E5%BB%BA/" title="Hbase概述及搭建">Hbase概述及搭建</a><time datetime="2022-06-07T16:00:00.000Z" title="发表于 2022-06-08 00:00:00">2022-06-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/07/Hive%E4%BC%98%E5%8C%96/" title="Hive优化"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hive优化"/></a><div class="content"><a class="title" href="/2022/06/07/Hive%E4%BC%98%E5%8C%96/" title="Hive优化">Hive优化</a><time datetime="2022-06-06T16:00:00.000Z" title="发表于 2022-06-07 00:00:00">2022-06-07</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2022/03/30/kIKMaLgXD862xEZ.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 秋水一色</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
