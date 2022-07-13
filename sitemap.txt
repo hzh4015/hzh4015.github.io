@@ -1,3 +1,8 @@
+http://example.com/2022/06/07/%E8%BF%9E%E7%BB%AD%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/
+http://example.com/2022/07/12/spark%E6%90%AD%E5%BB%BA/
+http://example.com/2022/07/06/scala%E6%A6%82%E8%BF%B0%E5%8F%8A%E4%BD%BF%E7%94%A8/
+http://example.com/2022/07/11/spark%E4%BB%A3%E7%A0%81/
+http://example.com/2022/07/10/spark%E6%A6%82%E8%BF%B0/
 http://example.com/2022/06/16/Sqoop/
 http://example.com/2022/06/13/Hbase%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/
 http://example.com/2022/06/11/Hbase%20Shell%202/
@@ -6,7 +11,6 @@ http://example.com/2022/06/08/Hbase%E6%A6%82%E8%BF%B0%E5%8F%8A%E6%90%AD%E5%BB%BA
 http://example.com/2022/06/11/Hbase%E8%BF%87%E6%BB%A4%E5%99%A8/
 http://example.com/2022/06/07/Hive%E4%BC%98%E5%8C%96/
 http://example.com/2022/06/02/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-2/
-http://example.com/2022/06/07/%E8%BF%9E%E7%BB%AD%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/
 http://example.com/2022/05/31/Hive%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-1/
 http://example.com/2022/05/31/Hive%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%AE%89%E8%A3%85/
 http://example.com/2022/05/31/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E6%A6%82%E8%BF%B0/
@@ -41,10 +45,12 @@ http://example.com/tags/Hbase/
 http://example.com/tags/Hive/
 http://example.com/tags/Mysql5-7/
 http://example.com/tags/Redis/
-http://example.com/tags/Sqoop/
 http://example.com/tags/Shell%E7%BC%96%E7%A8%8B/
 http://example.com/tags/Linux/
+http://example.com/tags/Sqoop/
 http://example.com/tags/shell%E4%B8%AD%E7%B3%BB%E7%BB%9F%E4%BB%BB%E5%8A%A1%E8%AE%BE%E7%BD%AE/
+http://example.com/tags/scala/
+http://example.com/tags/Spark/
 http://example.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/
 http://example.com/tags/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/
 http://example.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/
