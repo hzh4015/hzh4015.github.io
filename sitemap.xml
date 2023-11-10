@@ -416,14 +416,14 @@
 
   
   <url>
-    <loc>http://example.com/tags/DolphinScheduler/</loc>
+    <loc>http://example.com/tags/FLink/</loc>
     <lastmod>2023-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/FLink/</loc>
+    <loc>http://example.com/tags/DolphinScheduler/</loc>
     <lastmod>2023-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -493,14 +493,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/maven/</loc>
+    <loc>http://example.com/tags/Linux/</loc>
     <lastmod>2023-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/Linux/</loc>
+    <loc>http://example.com/tags/maven/</loc>
     <lastmod>2023-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -551,14 +551,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/categories/maven/</loc>
+    <loc>http://example.com/categories/Linux/</loc>
     <lastmod>2023-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/categories/Linux/</loc>
+    <loc>http://example.com/categories/maven/</loc>
     <lastmod>2023-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
